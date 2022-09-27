@@ -1,14 +1,21 @@
 package src;
 
+import java.util.ArrayList;
+
 public class Grille {
 
     public static Grille instance;
     public static int nombreColonne;
     public static int nombreLigne;
+    public static ArrayList<String> listeDesJoueurs = new ArrayList<String>();
+    private static int nombreDeJoueur = 2;
 
     private Grille() {
         ChoosePlayerNumber();
         // TODO : Réfléchir au système de tour et de joueur
+        listeDesJoueurs.add("O");
+        listeDesJoueurs.add("X");
+        listeDesJoueurs.add("V");
     }
 
     public static Grille getInstance() {
