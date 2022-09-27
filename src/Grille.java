@@ -11,9 +11,8 @@ public class Grille {
 
     private Grille() {
         nombreDeJoueur = ChoosePlayerNumber();
-        // TODO : Réfléchir au système de tour et de joueur
 
-        ToString();
+        // TODO : Réfléchir au système de tour et de joueur
     }
 
     public static Grille getInstance() {
@@ -23,21 +22,24 @@ public class Grille {
         return instance;
     }
 
-    public static void ToString() {
+    public static String ToString() {
+        String affichage = "\n";
         // TODO : Amélioration requise svp et return le tout en String :)
         for(int k = 0; k < nombreDeLigne; k++){
-            System.out.print("#");
+            affichage += "#";
 
             for (int j =0; j< nombreDeColonne; j++){
-                System.out.print(contenu.get(j).get(k));
+                affichage += contenu.get(j).get(k);
             }
 
-            System.out.println("#");
+            affichage += "#\n";
 
         }
 
-        System.out.println("#".repeat(nombreDeColonne+2));
-        System.out.println(" " + "abcdefghijklmnop".substring(0, nombreDeColonne) + " ");
+        affichage += "#".repeat(nombreDeColonne+2) +"\n";
+        affichage += " " + "abcdefghijklmnop".substring(0, nombreDeColonne) + "\n";
+
+        return affichage;
     }
 
     public static int ChoosePlayerNumber() {

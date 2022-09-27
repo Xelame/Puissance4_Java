@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 public class App {
     public static void main(String[] args) throws Exception {
         Grille.getInstance();
+        
     }
 
     public static String promptForString(String prompt) {
