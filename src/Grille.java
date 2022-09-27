@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Enumeration;
 
 public class Grille {
 
@@ -25,7 +24,7 @@ public class Grille {
     }
 
     public static void ToString() {
-        // TODO : Amélioration requise svp :)
+        // TODO : Amélioration requise svp et return le tout en String :)
         for(int k = 0; k < nombreDeLigne; k++){
             System.out.print("#");
 
@@ -38,6 +37,7 @@ public class Grille {
         }
 
         System.out.println("#".repeat(nombreDeColonne+2));
+        System.out.println(" " + "abcdefghijklmnop".substring(0, nombreDeColonne) + " ");
     }
 
     public static int ChoosePlayerNumber() {
