@@ -25,6 +25,6 @@ public class Grille {
 
         }
 
-        System.out.print("##########");
+        System.out.print("#########");
     }
 }

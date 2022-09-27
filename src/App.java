@@ -35,12 +35,15 @@ public class App {
         ArrayList<String> tmpC = new ArrayList<>();
         //get the colonne to save 
         int NumC = 1;
-    
-        for (int m=0; m<8;m++){
-            tmpC.set(m, game.get(m).get(NumC));       
-        }
 
-        game.set(NumC,tmpC);
+        game.get(4).set(1,"v");
+
+        game.get(1).set(4,"x");
+
+        game.get(0).set(4,"O");
+
+        Grille.ToString();
+    
         
    
 
