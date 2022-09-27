@@ -12,7 +12,11 @@ public class App {
 
     public static void main(String[] args) {
 
-        
+        System.out.println("  ");
+        System.out.println("=============================");
+        System.out.println("=         New Game          =");
+        System.out.println("=============================");
+        System.out.println("  ");
 
 
         //start for  2 players  8x6 = 48

@@ -25,6 +25,20 @@ public class Grille {
 
         }
 
-        System.out.print("#########");
+        System.out.println("##########");
+        System.out.println("abcdefgh");
+        System.out.println("  ");
+        System.out.println("===============================");
+        System.out.println("  ");
+    }
+
+
+    //info : choix de la colonne (a,b,c,d,e,f,g,h)
+    public static void ChooseColumn (char column ){
+        //this.P
+        //this.L
+        //this.C
+
+        if(column >  )
     }
 }
