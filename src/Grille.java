@@ -16,6 +16,7 @@ public class Grille {
         listeDesJoueurs.add("O");
         listeDesJoueurs.add("X");
         listeDesJoueurs.add("V");
+        System.out.println(GetPlayer(25));
     }
 
     public static Grille getInstance() {
@@ -31,8 +32,17 @@ public class Grille {
     }
 
     public static int ChoosePlayerNumber() {
-        // TODO : Demander au l'utilisateur combien sont-ils ? Et Initialise la taille
-        // du Tableau en conséquence :)
+        // TODO : Demander au l'utilisateur combien sont-ils ?
         return 0;
+    }
+
+    public static ArrayList<ArrayList<String>> GetSizeGrid(int numberOfPlayer) {
+        // TODO : Initialise la taille du Tableau en fonction du nombre de joueur
+        return new ArrayList<ArrayList<String>>();
+    }
+
+    // Fonction qui donne la lettre que joue un joueur en fonction du tour de jeu
+    public static String GetPlayer(int turn) {
+        return listeDesJoueurs.get(turn % nombreDeJoueur);
     }
 }
