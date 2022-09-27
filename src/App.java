@@ -1,10 +1,14 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+//import java.util.Arrays;
 
 public class App {
 
 
-    public static List<ArrayList<String>> game = new ArrayList<ArrayList<String>>();
+    public static ArrayList<ArrayList<String>> game = new ArrayList<ArrayList<String>>();
    
     public static int sizeC = 8;
     public static int sizeL = 6;
@@ -12,52 +16,51 @@ public class App {
 
     public static void main(String[] args) {
 
-        System.out.println("  ");
-        System.out.println("=============================");
-        System.out.println("=         New Game          =");
-        System.out.println("=============================");
-        System.out.println("  ");
+        Grid.ChoosePlayerNumber();
 
+        
 
-        //start for  2 players  8x6 = 48
+      
+        char letter = 'a';
+        System.out.println( (int)letter+" = "+ letter);
         
-        for (int i = 0; i< sizeC ;i++ ){
-            ArrayList<String> colonne = new ArrayList<String>();
-        
-            for (int j=0; j < sizeL; j++){
-                colonne.add(" ");
-            }
-            game.add(colonne);
-        
-        }
-
 
         //display
-        Grille.ToString();
-
        
-        ArrayList<String> tmpC = new ArrayList<>();
-        //get the colonne to save 
-        int NumC = 1;
 
-        game.get(4).set(1,"v");
+     
+        //game.get(4).set(1,"v");
 
-        game.get(1).set(4,"x");
+      
 
-        game.get(0).set(4,"O");
-
-        Grille.ToString();
+     
     
         
-   
 
+    }
 
-   
+    public static String promptForString(String prompt) {
+        System.out.println(prompt);
+        System.out.print("> ");
+        InputStreamReader bts = new InputStreamReader(System.in);
+        BufferedReader br = new BufferedReader(bts);
+        try {
+            return br.readLine();
+        } catch (IOException e) {
+            System.err.println("Something went wrong : " + e.getMessage());
+            System.err.println("Please try again.");
+            return promptForString(prompt);
+        }
+    }
 
-    
-
-
-
+    public static int promptForInt(String prompt) {
+        String response = promptForString(prompt);
+        try {
+            return Integer.parseInt(response);
+        } catch (NumberFormatException e) {
+            System.err.println("Please input a valid number.");
+            return promptForInt(prompt);
+        }
     }
 
 
