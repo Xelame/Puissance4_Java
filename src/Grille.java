@@ -2,20 +2,26 @@ import java.util.ArrayList;
 
 public class Grille {
 
-    public static Grille instance;
-    public static int nombreDeColonne;
-    public static int nombreDeLigne;
-    public static ArrayList<String> listeDesJoueurs = new ArrayList<String>();
+
+    private static Grille instance;
+    public int nombreDeColonne;
+    public int nombreDeLigne;
+    private static final String[] LISTE_DE_JOUEUR = { "O", "X", "V" };
+    private final String ALPHABET_MINUSCULE = "abcdefghijklmnopqrstuvwxyz";
+    private final String ALPHABET_MAJUSCULE = ALPHABET_MINUSCULE.toUpperCase();
     private static int nombreDeJoueur;
     private static ArrayList<ArrayList<String>> contenu;
 
+    // Constructeur privée ( toi même tu sais ;) ) 
     private Grille() {
         nombreDeJoueur = choosePlayerNumber();
+        System.out.println(toString());
+
         // TODO : Réfléchir au système de tour et de joueur
 
-        toString();
     }
 
+    // Méthode qui créer une seule unique instance de notre classe
     public static Grille getInstance() {
         if (instance == null) {
             instance = new Grille();
@@ -23,24 +29,28 @@ public class Grille {
         return instance;
     }
 
-    public static void toString() {
+    // Méthode pour afficher notre joli plateau de jeu
+    public String toString() {
+        String affichage = "\n";
         // TODO : Amélioration requise svp et return le tout en String :)
-        for(int k = 0; k < nombreDeLigne; k++){
-            System.out.print("#");
+        for (int k = 0; k < nombreDeLigne; k++) {
+            affichage += "#";
 
-            for (int j =0; j < nombreDeColonne; j++){
-                System.out.print(contenu.get(j).get(k));
+            for (int j = 0; j < nombreDeColonne; j++) {
+                affichage += contenu.get(j).get(k);
             }
 
-            System.out.println("#");
+            affichage += "#\n";
 
         }
 
-        System.out.println("#".repeat(nombreDeColonne+2));
-        System.out.println(" " + "abcdefghijklmnop".substring(0, nombreDeColonne) + " ");
+        affichage += "#".repeat(nombreDeColonne + 2) + "\n";
+        affichage += " " + ALPHABET_MINUSCULE.substring(0, nombreDeColonne) + "\n";
+
+        return affichage;
     }
 
-    public static int choosePlayerNumber() {
+    public int choosePlayerNumber() {
         // TODO : Demander au l'utilisateur combien sont-ils ?
         int players = App.promptForInt("Veuillez entrer le nombre de joueurs (2 ou 3)");
         if (2 <= players && players <= 3) {
@@ -55,7 +65,7 @@ public class Grille {
         return players;
     }
 
-    public static ArrayList<ArrayList<String>> getSizeGrid(int numberOfPlayer) {
+    public ArrayList<ArrayList<String>> getSizeGrid(int numberOfPlayer) {
         // TODO : Initialise la taille du Tableau en fonction du nombre de joueur
         ArrayList<ArrayList<String>> grid = new ArrayList<ArrayList<String>>();
         for (int i = 0; i < nombreDeColonne; i++) {
@@ -69,50 +79,18 @@ public class Grille {
     }
 
     // Fonction qui donne la lettre que joue un joueur en fonction du tour de jeu
-    public static String getPlayer(int turn) {
-        return listeDesJoueurs.get(turn % nombreDeJoueur);
+    public String getPlayer(int turn) {
+        return LISTE_DE_JOUEUR[turn % nombreDeJoueur];
     }
 
-    public static String chooseColumn(int turn) {
-        App.promptForString("Joueur " + getPlayer(turn) + " choisissez une colonne :\n");
+    // Demande au Joueur concerné qu'elle coup il joue
+    public String chooseColumn(int turn) {
+        String choice = App.promptForString("Joueur " + getPlayer(turn) + " choisissez une colonne :\n" + toString());
+        if (ALPHABET_MINUSCULE.substring(0, nombreDeColonne).contains(choice) || ALPHABET_MAJUSCULE.substring(0, nombreDeColonne).contains(choice)) {
+            return choice;
+        } else {
+            System.err.println("Choisissez un emplacement valide (avec la lettre correspondante ");
+            return chooseColumn(turn);
+        }
     }
 }
-
-
-//info : choix de la colonne (a,b,c,d,e,f,g,h,i,j)
-    //TODO : mettre en static
-    public void setColumn (char letter, ArrayList<ArrayList<String>> grid ){
-        //this.p
-        //this.L
-        //this.C
-
-        
-        //2 joueur 
-
-        // en ascii a = 97 et z = 122 donc on va de a à j c'est à dire de 97 à 106
-        if(this.p ==2){
-            //ascii (int)letter) , si letter = 'a' (int)letter donne 97 (voir tableau ascii)
-            if(((int)letter)<97 || ((int)letter)>106){
-                //TODO : dire à l'utilisateur qu'il y a une erreur
-                //rappel de la fonction :
-                setColumn(letter, grid);
-            }else {
-               
-                //si le caractère correspond à a on rempli la premiere colonne donc on fait letter - 96
-                int column = (int)letter-96;
-
-                //TODO : get la ligne ou peut aller la piece
-                //TODO : reccupérer l'objet qu'il faut mettre dans le tableau
-                if(columnIsFree()){
-                grid.get(column).set(getTheLine(grid),);
-                } else {
-                //TODO : si on retourne -1 envoyer un message 
-                }
-                  
-            }
-            //if(this.L )
-            
-        }
-        
-       
-    }

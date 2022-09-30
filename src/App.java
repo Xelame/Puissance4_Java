@@ -4,9 +4,11 @@ import java.io.InputStreamReader;
 
 public class App {
     public static void main(String[] args) throws Exception {
-        Grille.getInstance();
+        Grille grille = Grille.getInstance();
+        grille.chooseColumn(2);
     }
 
+    // Méthode pour Afficher proprement une question et récuperer une valeur de type String :)
     public static String promptForString(String prompt) {
         System.out.println(prompt);
         System.out.print("> ");
@@ -21,6 +23,7 @@ public class App {
         }
     }
 
+    // Méthode pour Afficher proprement une question et récuperer une valeur de type Integer :)
     public static int promptForInt(String prompt) {
         String response = promptForString(prompt);
         try {
