@@ -4,8 +4,8 @@ public class Grille {
 
 
     private static Grille instance;
-    public int nombreDeColonne;
-    public int nombreDeLigne;
+    private int nombreDeColonne;
+    private int nombreDeLigne;
     private static final String[] LISTE_DE_JOUEUR = { "O", "X", "V" };
     private final String ALPHABET_MINUSCULE = "abcdefghijklmnopqrstuvwxyz";
     private final String ALPHABET_MAJUSCULE = ALPHABET_MINUSCULE.toUpperCase();
@@ -32,12 +32,12 @@ public class Grille {
     // Méthode pour afficher notre joli plateau de jeu
     public String toString() {
         String affichage = "\n";
-        // TODO : Amélioration requise svp et return le tout en String :)
-        for (int k = 0; k < nombreDeLigne; k++) {
+        for (int indexLigne = 0; indexLigne < nombreDeLigne; indexLigne++) {
+            
             affichage += "#";
 
-            for (int j = 0; j < nombreDeColonne; j++) {
-                affichage += contenu.get(j).get(k);
+            for (int indexColonne = 0; indexColonne < nombreDeColonne; indexColonne++) {
+                affichage += contenu.get(indexColonne).get(indexLigne);
             }
 
             affichage += "#\n";
@@ -50,7 +50,7 @@ public class Grille {
         return affichage;
     }
 
-    public int choosePlayerNumber() {
+    private int choosePlayerNumber() {
         // TODO : Demander au l'utilisateur combien sont-ils ?
         int players = App.promptForInt("Veuillez entrer le nombre de joueurs (2 ou 3)");
         if (2 <= players && players <= 3) {
@@ -65,7 +65,7 @@ public class Grille {
         return players;
     }
 
-    public ArrayList<ArrayList<String>> getSizeGrid(int numberOfPlayer) {
+    private ArrayList<ArrayList<String>> getSizeGrid(int numberOfPlayer) {
         // TODO : Initialise la taille du Tableau en fonction du nombre de joueur
         ArrayList<ArrayList<String>> grid = new ArrayList<ArrayList<String>>();
         for (int i = 0; i < nombreDeColonne; i++) {
@@ -79,12 +79,12 @@ public class Grille {
     }
 
     // Fonction qui donne la lettre que joue un joueur en fonction du tour de jeu
-    public String getPlayer(int turn) {
+    private String getPlayer(int turn) {
         return LISTE_DE_JOUEUR[turn % nombreDeJoueur];
     }
 
     // Demande au Joueur concerné qu'elle coup il joue
-    public String chooseColumn(int turn) {
+    private String chooseColumn(int turn) {
         String choice = App.promptForString("Joueur " + getPlayer(turn) + " choisissez une colonne :\n" + toString());
         if (ALPHABET_MINUSCULE.substring(0, nombreDeColonne).contains(choice) || ALPHABET_MAJUSCULE.substring(0, nombreDeColonne).contains(choice)) {
             return choice;
