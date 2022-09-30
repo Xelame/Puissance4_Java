@@ -2,7 +2,6 @@ import java.util.ArrayList;
 
 public class Grille {
 
-
     private static Grille instance;
     private int nombreDeColonne;
     private int nombreDeLigne;
@@ -12,12 +11,13 @@ public class Grille {
     private static int nombreDeJoueur;
     private static ArrayList<ArrayList<String>> contenu;
 
-    // Constructeur privée ( toi même tu sais ;) ) 
+    // Constructeur privée ( toi même tu sais ;) )
     private Grille() {
         nombreDeJoueur = choosePlayerNumber();
         System.out.println(toString());
 
-        // TODO : Réfléchir au système de tour et de joueur
+        // TODO : Trouver des éléments permetant d'utiliser des classe
+        // car notre projet ne suis pas vraiment le principe de POO :/
 
     }
 
@@ -33,7 +33,7 @@ public class Grille {
     public String toString() {
         String affichage = "\n";
         for (int indexLigne = 0; indexLigne < nombreDeLigne; indexLigne++) {
-            
+
             affichage += "#";
 
             for (int indexColonne = 0; indexColonne < nombreDeColonne; indexColonne++) {
@@ -86,7 +86,8 @@ public class Grille {
     // Demande au Joueur concerné qu'elle coup il joue
     private String chooseColumn(int turn) {
         String choice = App.promptForString("Joueur " + getPlayer(turn) + " choisissez une colonne :\n" + toString());
-        if (ALPHABET_MINUSCULE.substring(0, nombreDeColonne).contains(choice) || ALPHABET_MAJUSCULE.substring(0, nombreDeColonne).contains(choice)) {
+        if (ALPHABET_MINUSCULE.substring(0, nombreDeColonne).contains(choice)
+                || ALPHABET_MAJUSCULE.substring(0, nombreDeColonne).contains(choice)) {
             return choice;
         } else {
             System.err.println("Choisissez un emplacement valide (avec la lettre correspondante ");
