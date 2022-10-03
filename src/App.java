@@ -5,7 +5,6 @@ import java.io.InputStreamReader;
 public class App {
     public static void main(String[] args) throws Exception {
         Grille grille = Grille.getInstance();
-        grille.chooseColumn(2);
     }
 
     // Méthode pour Afficher proprement une question et récuperer une valeur de type String :)
