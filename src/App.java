@@ -21,8 +21,8 @@ public class App {
         
 
       
-        char letter = 'a';
-        System.out.println( (int)letter+" = "+ letter);
+        
+       
         
 
         //display
