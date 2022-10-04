@@ -114,7 +114,7 @@ public class Grille {
             // TODO : Faire l'interaction voulu :)
             String laLettreQueNousDonneLeJoueur = chooseColumn(turnNumber);
             System.out.println(laLettreQueNousDonneLeJoueur);
-            turnNumber += 1;
+            turnNumber++;
         }
     }
 
