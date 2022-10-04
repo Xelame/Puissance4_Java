@@ -33,8 +33,17 @@ public class Grid {
                 System.out.print("#\n");
     
             }
-    
-            System.out.print("##########");
+            if (this.p == 2){
+                System.out.println("##########");
+                System.out.println("abcdefgh");
+            }
+            if (this.p == 3){
+                System.out.println("##############");
+                System.out.println("a b c d e f g h");
+            }
+            System.out.println("  ");
+            System.out.println("===============================");
+            System.out.println("  ");
         }
 
         public ArrayList<ArrayList<String>> initGrid(){
