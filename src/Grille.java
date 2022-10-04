@@ -21,6 +21,10 @@ public class Grille {
 
     // Le contenu de la grille 
     private static ArrayList<ArrayList<String>> contenu;
+    
+    //info : les joueurs vont soit de 0 à 1 (2j) ou de 0 à 2 (3j)
+    private static int numeroPLayer =0;
+    private static int column =0;
 
     // Constructeur privée ( toi même tu sais ;) )
     private Grille() {
@@ -66,7 +70,7 @@ public class Grille {
         int players = App.promptForInt("Veuillez entrer le nombre de joueurs (2 ou 3)");
         if (2 <= players && players <= 3) {
             nombreDeColonne = players * 4;
-            nombreDeLigne = Math.round(players * 3.3f);
+            nombreDeLigne = Math.round(players * 3.2f);
             contenu = getSizeGrid(players);
         } else {
             System.err.println("Please input a valid number");
@@ -117,5 +121,55 @@ public class Grille {
             turnNumber++;
         }
     }
+
+    public boolean columnIsFree(){
+                if(contenu.get(0).get(column) == " "){
+                    return true;
+                } 
+                
+                return false;
+                
+        
+
+    }
+ 
+
+    //info : si choix de la colonne (a,b,c,d,e,f,g,h,i,j) --> affichage column
+    //TODO : mettre en static
+    public void setColumn (){
+     
+        // en ascii a = 97 et z = 122 donc on va de a à j c'est à dire de 97 à 106              
+                //si le caractère correspond à a on rempli la premiere colonne donc on fait letter - 96
+                char letter =  chooseColumn(numeroPLayer).charAt(0);
+                column = (int)letter-96;
+
+                 if(columnIsFree()){
+
+                    contenu.get(column).set(getTheLine(1),(String) chooseColumn(numeroPLayer));
+
+                } else {
+                System.out.println("La colonne est déjà  complète  ");
+                chooseColumn(numeroPLayer);
+
+               
+                }
+                  
+          
+        
+       
+    }
+
+    public int getTheLine(int line){
+
+        if(contenu.get(line).get(column) == " "){
+            return getTheLine(line+1);
+
+        }else {
+            return line-1;
+        }
+
+    }
+
+    
 
 }
