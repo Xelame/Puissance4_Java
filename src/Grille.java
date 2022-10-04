@@ -55,7 +55,7 @@ public class Grille {
         int players = App.promptForInt("Veuillez entrer le nombre de joueurs (2 ou 3)");
         if (2 <= players && players <= 3) {
             nombreDeColonne = players * 4;
-            nombreDeLigne = Math.round(players * 3.3f);
+            nombreDeLigne = Math.round(players * 3.2f);
             contenu = getSizeGrid(players);
         } else {
             System.err.println("Please input a valid number");
@@ -94,4 +94,42 @@ public class Grille {
             return chooseColumn(turn);
         }
     }
+
+    public boolean checkPlayerWin(String symbol){
+        // check if there 4 same symbols in each column.
+        int nbSymbolPerLine = 0; 
+        for (int i = 0; i < nombreDeColonne-1; i++){
+            for (int j = 0; j < nombreDeLigne-1; j++){
+                if (contenu.get(i).get(j) == symbol){
+                    nbSymbolPerLine +=1;
+                    if (nbSymbolPerLine == 4){
+                        return true;
+                    }
+                } else {
+                    nbSymbolPerLine = 0;
+                }
+            }
+            nbSymbolPerLine = 0;
+        }  
+
+        //----------------------------
+
+        int nbSymbolPerColumn = 0;
+        for (int l = 0; l < nombreDeLigne-1; l++){
+            for (int k = 0; k < nombreDeColonne-1; k++){
+                if (contenu.get(k).get(l) == symbol){
+                    nbSymbolPerColumn +=1;
+                    if (nbSymbolPerColumn == 4){
+                        return true;
+                    }
+                }
+            }
+            nbSymbolPerColumn = 0;
+        }
+
+        //check diagonale
+        return false;
+    }
+
+
 }
