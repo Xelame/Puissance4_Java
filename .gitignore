@@ -12,7 +12,7 @@
 
 # Package Files #
 *.jar
-*.wargit p
+*.war
 *.nar
 *.ear
 *.zip
