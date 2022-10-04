@@ -90,13 +90,13 @@ public class Grille {
     }
 
     // Fonction qui donne la lettre que joue un joueur en fonction du tour de jeu
-    private String getPlayer(int turn) {
+    private String getPlayerLetter(int turn) {
         return LISTE_DE_JOUEUR[turn % nombreDeJoueur];
     }
 
     // Demande au Joueur concerné qu'elle coup il joue
     private String chooseColumn(int turn) {
-        String choice = App.promptForString("Joueur " + getPlayer(turn) + " choisissez une colonne :\n" + toString());
+        String choice = App.promptForString("Joueur " + getPlayerLetter(turn) + " choisissez une colonne :\n" + toString());
         if (ALPHABET_MINUSCULE.substring(0, nombreDeColonne).contains(choice)
                 || ALPHABET_MAJUSCULE.substring(0, nombreDeColonne).contains(choice)) {
             return choice;
