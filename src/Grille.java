@@ -111,8 +111,9 @@ public class Grille {
         int turnNumber = 0;
         // TODO : Mettre la condition de fin ici
         while (true) {
-            chooseColumn(turnNumber);
-
+            // TODO : Faire l'interaction voulu :)
+            String laLettreQueNousDonneLeJoueur = chooseColumn(turnNumber);
+            System.out.println(laLettreQueNousDonneLeJoueur);
             turnNumber += 1;
         }
     }
