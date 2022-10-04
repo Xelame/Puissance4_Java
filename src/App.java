@@ -29,7 +29,7 @@ public class App {
         try {
             return Integer.parseInt(response);
         } catch (NumberFormatException e) {
-            System.err.println("Please input a valid number.");
+            
             return promptForInt(prompt);
         }
     }

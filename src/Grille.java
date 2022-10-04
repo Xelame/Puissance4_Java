@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 
+import javax.sound.sampled.Line;
+
 public class Grille {
 
     // L'instance (La seule l'unique) d'UNE grille ^^
@@ -9,22 +11,24 @@ public class Grille {
     private int nombreDeColonne;
     private int nombreDeLigne;
 
-    // La liste de lettre pour les possible joueur (c'est pas très compréhensible my fault ^^')
+    // La liste de lettre pour les possible joueur (c'est pas très compréhensible my
+    // fault ^^')
     private static final String[] LISTE_DE_JOUEUR = { "O", "X", "V" };
 
-    // Des Constantes d'alphabet pour une lecture plus lisible de notre code vous verrez 🦚
+    // Des Constantes d'alphabet pour une lecture plus lisible de notre code vous
+    // verrez 🦚
     private final String ALPHABET_MINUSCULE = "abcdefghijklmnopqrstuvwxyz";
     private final String ALPHABET_MAJUSCULE = ALPHABET_MINUSCULE.toUpperCase();
 
     // Le nombre de joueurs qui vont jouer
     private static int nombreDeJoueur;
 
-    // Le contenu de la grille 
+    // Le contenu de la grille
     private static ArrayList<ArrayList<String>> contenu;
-    
-    //info : les joueurs vont soit de 0 à 1 (2j) ou de 0 à 2 (3j)
-    private static int numeroPLayer =0;
-    private static int column =0;
+
+    // info : les joueurs vont soit de 0 à 1 (2j) ou de 0 à 2 (3j)
+    private static int numeroPLayer = 0;
+    private static int column = 0;
 
     // Constructeur privée ( toi même tu sais ;) )
     private Grille() {
@@ -110,50 +114,51 @@ public class Grille {
         }
     }
 
-    public boolean columnIsFree(){
-                if(contenu.get(0).get(column) == " "){
-                    return true;
-                } 
-                
-                return false;
-                
-        
+    public boolean columnIsFree() {
+        if (contenu.get(column).get(0) == " ") {
+            return true;
+        }
+
+        return false;
 
     }
- 
 
-    //info : si choix de la colonne (a,b,c,d,e,f,g,h,i,j) --> affichage column
-   
-    public void setColumn (String nomColonne, int turnNumber){
-     
-        // en ascii a = 97 et z = 122 donc on va de a à j c'est à dire de 97 à 106              
-                //si le caractère correspond à a on rempli la premiere colonne donc on fait letter - 97 car on commence à 0
-                char letter =  nomColonne.charAt(0);
-                column = (int)letter-97;
+    // info : si choix de la colonne (a,b,c,d,e,f,g,h,i,j) --> affichage column
 
-                 if(columnIsFree()){
+    public void setColumn(String nomColonne, int turnNumber) {
 
-                    contenu.get(column).set(getTheLine(1),getPlayerLetter(turnNumber));
+        // en ascii a = 97 et z = 122 donc on va de a à j c'est à dire de 97 à 106
+        // si le caractère correspond à a on rempli la premiere colonne donc on fait
+        // letter - 97 car on commence à 0
 
-                } else {
-                System.out.println("La colonne est déjà  complète  ");
-                chooseColumn(numeroPLayer);
-                toString();
+        char letter = nomColonne.charAt(0);
+        column = (int) letter - 97;
 
-                }
-                  
-          
-        
-       
+        if (columnIsFree()) {
+
+            contenu.get(column).set(getTheLine(0), getPlayerLetter(turnNumber));
+
+        } else {
+            System.out.println(" La colonne est déjà  complète !!");
+            chooseColumn(turnNumber);
+            toString();
+
+        }
+
     }
 
-    public int getTheLine(int line){
+    public int getTheLine(int line) {
+        
+        if( line == nombreDeLigne -1){
+            return line;
+        }
+        if ((contenu.get(column).get(line+1) == " ") && (line < nombreDeLigne-1)) {
+                    //System.out.println("(contenu.get("+column+").get("+(line+1)+") == |"+ contenu.get(column).get(line+1) +"|");
 
-        if((contenu.get(line).get(column) == " " ) && (line < nombreDeLigne)){
-            return getTheLine(line+1);
+            return getTheLine(line + 1);
 
-        }else {
-            return line-1;
+        } else {
+            return line;
         }
 
     }
@@ -170,7 +175,5 @@ public class Grille {
             turnNumber++;
         }
     }
-
-    
 
 }
