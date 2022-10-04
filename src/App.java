@@ -1,44 +1,13 @@
-import java.util.ArrayList;
-import java.util.List;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-//import java.util.Arrays;
 
 public class App {
-
-
-    public static ArrayList<ArrayList<String>> game = new ArrayList<ArrayList<String>>();
-   
-    public static int sizeC = 8;
-    public static int sizeL = 6;
-    public static int sizeTab = sizeC*sizeL;
-
-    public static void main(String[] args) {
-
-        Grid.ChoosePlayerNumber();
-
-        
-
-      
-        
-       
-        
-
-        //display
-       
-
-     
-        //game.get(4).set(1,"v");
-
-      
-
-     
-    
-        
-
+    public static void main(String[] args) throws Exception {
+        Grille grille = Grille.getInstance();
     }
 
+    // Méthode pour Afficher proprement une question et récuperer une valeur de type String :)
     public static String promptForString(String prompt) {
         System.out.println(prompt);
         System.out.print("> ");
@@ -53,6 +22,7 @@ public class App {
         }
     }
 
+    // Méthode pour Afficher proprement une question et récuperer une valeur de type Integer :)
     public static int promptForInt(String prompt) {
         String response = promptForString(prompt);
         try {
@@ -62,7 +32,4 @@ public class App {
             return promptForInt(prompt);
         }
     }
-
-
-
 }

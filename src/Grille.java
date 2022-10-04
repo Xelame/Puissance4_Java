@@ -10,6 +10,10 @@ public class Grille {
     private final String ALPHABET_MAJUSCULE = ALPHABET_MINUSCULE.toUpperCase();
     private static int nombreDeJoueur;
     private static ArrayList<ArrayList<String>> contenu;
+    
+    //info : les joueurs vont soit de 0 à 1 (2j) ou de 0 à 2 (3j)
+    private static int numeroPLayer =0;
+    private static int column =0;
 
     // Constructeur privée ( toi même tu sais ;) )
     private Grille() {
@@ -95,55 +99,54 @@ public class Grille {
         }
     }
 
-    //info : choix de la colonne (a,b,c,d,e,f,g,h,i,j)
-    //TODO : mettre en static
-    public void setColumn (char letter, ArrayList<ArrayList<String>> grid ){
-        //this.p
-        //this.L
-        //this.C
-
+    public boolean columnIsFree(){
+                if(contenu.get(0).get(column) == " "){
+                    return true;
+                } 
+                
+                return false;
+                
         
-        //2 joueur 
 
-        // en ascii a = 97 et z = 122 donc on va de a à j c'est à dire de 97 à 106
-        if(this.p ==2){
-            //ascii (int)letter) , si letter = 'a' (int)letter donne 97 (voir tableau ascii)
-            if(((int)letter)<97 || ((int)letter)>106){
-                //TODO : dire à l'utilisateur qu'il y a une erreur
-                //rappel de la fonction :
-                setColumn(letter, grid);
-            }else {
-               
+    }
+ 
+
+    //info : si choix de la colonne (a,b,c,d,e,f,g,h,i,j) --> affichage column
+    //TODO : mettre en static
+    public void setColumn (){
+     
+        // en ascii a = 97 et z = 122 donc on va de a à j c'est à dire de 97 à 106              
                 //si le caractère correspond à a on rempli la premiere colonne donc on fait letter - 96
-                int column = (int)letter-96;
+                char letter =  chooseColumn(numeroPLayer).charAt(0);
+                column = (int)letter-96;
 
-                //TODO : get la ligne ou peut aller la piece
-                //TODO : reccupérer l'objet qu'il faut mettre dans le tableau
-                if(columnIsFree()){
-                grid.get(column).set(getTheLine(grid),);
+                 if(columnIsFree()){
+
+                    contenu.get(column).set(getTheLine(1),(String) chooseColumn(numeroPLayer));
+
                 } else {
-                //TODO : si on retourne -1 envoyer un message 
+                System.out.println("La colonne est déjà  complète  ");
+                chooseColumn(numeroPLayer);
+
+               
                 }
                   
-            }
-            //if(this.L )
-            
-        }
+          
         
        
     }
 
-    public int getTheLine(ArrayList<ArrayList<String>> grid){
+    public int getTheLine(int line){
 
+        if(contenu.get(line).get(column) == " "){
+            return getTheLine(line+1);
 
-        //TODO : return value
-      
-        return 0;
-
-    }
-
-    public boolean columnIsFree(ArrayList<ArrayList<String>> grid){
+        }else {
+            return line-1;
+        }
 
     }
+
+    
 
 }
