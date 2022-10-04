@@ -2,13 +2,24 @@ import java.util.ArrayList;
 
 public class Grille {
 
+    // L'instance (La seule l'unique) d'UNE grille ^^
     private static Grille instance;
+
+    // Sa taille jusque la vous suivé :)
     private int nombreDeColonne;
     private int nombreDeLigne;
+
+    // La liste de lettre pour les possible joueur (c'est pas très compréhensible my fault ^^')
     private static final String[] LISTE_DE_JOUEUR = { "O", "X", "V" };
+
+    // Des Constantes d'alphabet pour une lecture plus lisible de notre code vous verrez 🦚
     private final String ALPHABET_MINUSCULE = "abcdefghijklmnopqrstuvwxyz";
     private final String ALPHABET_MAJUSCULE = ALPHABET_MINUSCULE.toUpperCase();
+
+    // Le nombre de joueurs qui vont jouer
     private static int nombreDeJoueur;
+
+    // Le contenu de la grille 
     private static ArrayList<ArrayList<String>> contenu;
 
     // Constructeur privée ( toi même tu sais ;) )
@@ -17,7 +28,7 @@ public class Grille {
         System.out.println(toString());
 
         // TODO : Trouver des éléments permetant d'utiliser des classe
-        // car notre projet ne suis pas vraiment le principe de POO :/
+        // car notre projet ne suis pas vraiment le principe de POO :/ 💭
 
     }
 
@@ -51,7 +62,7 @@ public class Grille {
     }
 
     private int choosePlayerNumber() {
-        // TODO : Demander au l'utilisateur combien sont-ils ?
+        // TODO : Demander au l'utilisateur combien sont-ils ? ✅
         int players = App.promptForInt("Veuillez entrer le nombre de joueurs (2 ou 3)");
         if (2 <= players && players <= 3) {
             nombreDeColonne = players * 4;
@@ -66,7 +77,7 @@ public class Grille {
     }
 
     private ArrayList<ArrayList<String>> getSizeGrid(int numberOfPlayer) {
-        // TODO : Initialise la taille du Tableau en fonction du nombre de joueur
+        // TODO : Initialise la taille du Tableau en fonction du nombre de joueur ✅
         ArrayList<ArrayList<String>> grid = new ArrayList<ArrayList<String>>();
         for (int i = 0; i < nombreDeColonne; i++) {
             ArrayList<String> arrcolumn = new ArrayList<String>();
@@ -95,7 +106,7 @@ public class Grille {
         }
     }
 
-    // TODO : La loop de jeu
+    // TODO : La loop de jeu ✅
     public void Play() {
         int turnNumber = 0;
         // TODO : Mettre la condition de fin ici
