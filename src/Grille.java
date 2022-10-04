@@ -94,4 +94,16 @@ public class Grille {
             return chooseColumn(turn);
         }
     }
+
+    // TODO : La loop de jeu
+    public void Play() {
+        int turnNumber = 0;
+        // TODO : Mettre la condition de fin ici
+        while (true) {
+            chooseColumn(turnNumber);
+
+            turnNumber += 1;
+        }
+    }
+
 }
