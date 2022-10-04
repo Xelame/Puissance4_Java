@@ -174,13 +174,8 @@ public class Grille {
                 } else {
                 System.out.println("La colonne est déjà  complète  ");
                 chooseColumn(numeroPLayer);
-                toString();
-
                 }
-                  
-          
-        
-       
+                System.out.println(checkPlayerWin(getPlayerLetter(turnNumber)));
     }
 
     public int getTheLine(int line){
