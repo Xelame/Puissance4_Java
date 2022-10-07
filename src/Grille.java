@@ -20,7 +20,7 @@ public class Grille {
     private static int nombreDeJoueur;
 
     // Le contenu de la grille 
-    private static ArrayList<ArrayList<String>> contenu;
+    private ArrayList<ArrayList<String>> contenu;
     
     //info : les joueurs vont soit de 0 à 1 (2j) ou de 0 à 2 (3j)
     private static int numeroPLayer =0;
@@ -45,20 +45,33 @@ public class Grille {
     }
 
     // Méthode pour afficher notre joli plateau de jeu
+    // Liste de départ : [[ ,  ,  ,  ,  ,  ,  ], [ ,  ,  ,  ,  ,  ,  ], ..., [ ,  ,  ,  ,  ,  ,  ]]
+    /* Résultat : 
+    [⎴ ⎴ ⎴ ⎴ ⎴ ⎴ ⎴ ⎴|
+    |                |  ^
+    |                |  |
+    |                |  |
+    |                |
+    |⎵,⎵,⎵,⎵,⎵,⎵,⎵,⎵]
+    */
     public String toString() {
         String affichage = "\n";
-        for (int indexLigne = 0; indexLigne < nombreDeLigne; indexLigne++) {
 
+        // Body
+        for (int indexLigne = nombreDeLigne-1; indexLigne >= 0; indexLigne--) {
+
+            // Line
             affichage += "#";
-
+            String ligne = "";
             for (int indexColonne = 0; indexColonne < nombreDeColonne; indexColonne++) {
-                affichage += contenu.get(indexColonne).get(indexLigne);
+                ligne += contenu.get(indexColonne).get(indexLigne);
             }
-
+            affichage += ligne;
             affichage += "#\n";
 
         }
 
+        // Floor
         affichage += "#".repeat(nombreDeColonne + 2) + "\n";
         affichage += " " + ALPHABET_MINUSCULE.substring(0, nombreDeColonne) + "\n";
 
@@ -70,8 +83,8 @@ public class Grille {
         int players = App.promptForInt("Veuillez entrer le nombre de joueurs (2 ou 3)");
         if (2 <= players && players <= 3) {
             nombreDeColonne = players * 4;
-            nombreDeLigne = Math.round(players * 3.3f);
-            contenu = getSizeGrid(players);
+            nombreDeLigne = Math.round(players * 3.2f);
+            getSizeGrid(players);
         } else {
             System.err.println("Please input a valid number");
             choosePlayerNumber();
@@ -80,17 +93,16 @@ public class Grille {
         return players;
     }
 
-    private ArrayList<ArrayList<String>> getSizeGrid(int numberOfPlayer) {
+    private void getSizeGrid(int numberOfPlayer) {
+        contenu = new ArrayList<>();
         // TODO : Initialise la taille du Tableau en fonction du nombre de joueur ✅
-        ArrayList<ArrayList<String>> grid = new ArrayList<ArrayList<String>>();
         for (int i = 0; i < nombreDeColonne; i++) {
-            ArrayList<String> arrcolumn = new ArrayList<String>();
+            ArrayList<String> colonne = new ArrayList<String>();
             for (int j = 0; j < nombreDeLigne; j++) {
-                arrcolumn.add(" ");
+                colonne.add(" ");
             }
-            grid.add(arrcolumn);
+            contenu.add(colonne);
         }
-        return grid;
     }
 
     // Fonction qui donne la lettre que joue un joueur en fonction du tour de jeu
@@ -116,7 +128,6 @@ public class Grille {
         while (turnNumber < 50) {
             // TODO : Faire l'interaction voulu :)
             String laLettreQueNousDonneLeJoueur = chooseColumn(turnNumber);
-            System.out.println(laLettreQueNousDonneLeJoueur);
             turnNumber++;
         }
     }
