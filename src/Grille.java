@@ -70,7 +70,7 @@ public class Grille {
         int players = App.promptForInt("Veuillez entrer le nombre de joueurs (2 ou 3)");
         if (2 <= players && players <= 3) {
             nombreDeColonne = players * 4;
-            nombreDeLigne = Math.round(players * 3.2f);
+            nombreDeLigne = Math.round(players * 3.3f);
             contenu = getSizeGrid(players);
         } else {
             System.err.println("Please input a valid number");
@@ -101,11 +101,10 @@ public class Grille {
     // Demande au Joueur concerné qu'elle coup il joue
     private String chooseColumn(int turn) {
         String choice = App.promptForString("Joueur " + getPlayerLetter(turn) + " choisissez une colonne :\n" + toString());
-        if (ALPHABET_MINUSCULE.substring(0, nombreDeColonne).contains(choice)
-                || ALPHABET_MAJUSCULE.substring(0, nombreDeColonne).contains(choice)) {
+        if ((ALPHABET_MINUSCULE.substring(0, nombreDeColonne).contains(choice) || ALPHABET_MAJUSCULE.substring(0, nombreDeColonne).contains(choice)) && choice.length() > 0) {
             return choice;
         } else {
-            System.err.println("Choisissez un emplacement valide (avec la lettre correspondante ");
+            System.err.println("Choisissez un emplacement valide (avec la lettre correspondante) ");
             return chooseColumn(turn);
         }
     }
@@ -114,62 +113,11 @@ public class Grille {
     public void Play() {
         int turnNumber = 0;
         // TODO : Mettre la condition de fin ici
-        while (true) {
+        while (turnNumber < 50) {
             // TODO : Faire l'interaction voulu :)
             String laLettreQueNousDonneLeJoueur = chooseColumn(turnNumber);
             System.out.println(laLettreQueNousDonneLeJoueur);
             turnNumber++;
         }
     }
-
-    public boolean columnIsFree(){
-                if(contenu.get(0).get(column) == " "){
-                    return true;
-                } 
-                
-                return false;
-                
-        
-
-    }
- 
-
-    //info : si choix de la colonne (a,b,c,d,e,f,g,h,i,j) --> affichage column
-    //TODO : mettre en static
-    public void setColumn (){
-     
-        // en ascii a = 97 et z = 122 donc on va de a à j c'est à dire de 97 à 106              
-                //si le caractère correspond à a on rempli la premiere colonne donc on fait letter - 96
-                char letter =  chooseColumn(numeroPLayer).charAt(0);
-                column = (int)letter-96;
-
-                 if(columnIsFree()){
-
-                    contenu.get(column).set(getTheLine(1),(String) chooseColumn(numeroPLayer));
-
-                } else {
-                System.out.println("La colonne est déjà  complète  ");
-                chooseColumn(numeroPLayer);
-
-               
-                }
-                  
-          
-        
-       
-    }
-
-    public int getTheLine(int line){
-
-        if(contenu.get(line).get(column) == " "){
-            return getTheLine(line+1);
-
-        }else {
-            return line-1;
-        }
-
-    }
-
-    
-
 }
