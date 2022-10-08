@@ -43,27 +43,8 @@ public class Grille {
     }
 
     // Méthode pour afficher notre joli plateau de jeu
-    // Liste de départ : [colonne:([ , , , , , , ]), [ , , , , , , ], ..., [ , , , ,
-    // , , ]]
-    /*
-     * Résultat :
-     * [⎴ ⎴ ⎴ ⎴ ⎴ ⎴ ⎴ ⎴|
-     * |4| ^
-     * |3| |
-     * |2| |
-     * |1|
-     * |⎵,⎵,⎵,⎵,⎵,⎵,⎵,⎵]
-     */
-    // J'espere que c'est compréhensible : contenu.get(L'index de la
-    // colonne).get(L'index de la ligne)
-    // peu pas faire plus précis
-    // 'fin ptète bien que si
-    // oé bon je sais pas finalement
-    // Si vous voulez posé moi plus d'explication en message privé
-    // Titouan49lebg sur insta (c'est mon compte pro secret)
-    // et voila g tout dit :)
-    // tu lis encore ?
-    // c bien
+    // Visuel graphique : https://ibb.co/M24D7WC (expire le 8/11/2022)
+    // Dite le moi si vous en voyuler d'autres plus jolie UWU
     public String toString() {
         String affichage = "\n";
 
