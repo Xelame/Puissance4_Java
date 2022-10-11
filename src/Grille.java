@@ -117,6 +117,7 @@ public class Grille {
             for (int j = 0; j < nombreDeLigne-1; j++){
                 if (contenu.get(i).get(j) == symbol){
                     nbSymbolPerLine +=1;
+                    System.out.println(nbSymbolPerLine);
                     if (nbSymbolPerLine == 4){
                         return true;
                     }
