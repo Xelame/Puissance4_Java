@@ -4,6 +4,7 @@ import java.io.InputStreamReader;
 
 public class App {
     public static void main(String[] args) throws Exception {
+        final
         Grille grille = Grille.getInstance();
         grille.Play();
     }
