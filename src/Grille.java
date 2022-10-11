@@ -105,6 +105,8 @@ public class Grille {
         // TODO : Mettre la condition de fin ici
         while (isRunning) {
             // TODO : Faire l'interaction voulu :)
+
+            //TODO : difference entre local et reseau
             String laLettreQueNousDonneLeJoueur = chooseColumn(turnNumber);
             setColumn(laLettreQueNousDonneLeJoueur, turnNumber);
             if (isFull()

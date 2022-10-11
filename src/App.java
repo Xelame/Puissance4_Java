@@ -3,8 +3,13 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class App {
+
+    private static boolean isLocal = false;
     public static void main(String[] args) throws Exception {
+     
         Grille grille = Grille.getInstance();
+        isLocal = localOrNot();
+
         grille.Play();
     }
 
