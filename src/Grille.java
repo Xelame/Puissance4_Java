@@ -218,7 +218,7 @@ public class Grille {
      * @param turn
      * @return a Letter corresponding to the column choosen
      */
-    private String chooseColumn(int turn) {
+    String chooseColumn(int turn) {
         String choice = App
                 .promptForString("Joueur " + getPlayerLetter(turn) + " choisissez une colonne :\n" + toString());
         if ((ALPHABET_MINUSCULE.substring(0, nombreDeColonne).contains(choice)
