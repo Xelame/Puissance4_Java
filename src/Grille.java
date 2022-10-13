@@ -54,7 +54,7 @@ public class Grille {
     /**
      * Le contenu de la grille
      */
-    private ArrayList<ArrayList<String>> contenu;
+    private ArrayList<Colonne> contenu;
 
     /**
      * Constructeur privée ( toi même tu sais ;) )
@@ -82,7 +82,8 @@ public class Grille {
             affichage += "#";
             String ligne = "";
             for (int indexColonne = 0; indexColonne < nombreDeColonne; indexColonne++) {
-                ligne += contenu.get(indexColonne).get(indexLigne);
+                Colonne colonne = contenu.get(indexColonne);
+                ligne += colonne.getArray()[indexLigne];
             }
             affichage += ligne;
             affichage += "#\n";
@@ -132,28 +133,11 @@ public class Grille {
         // etc...)
         int column = ALPHABET_MINUSCULE.indexOf(nomColonne.toLowerCase());
 
-        if (columnIsNotFull(column)) {
-
-            contenu.get(column).set(getTheLine(column, 0), getPlayerLetter(turnNumber));
-
-        } else {
+        if (contenu.get(column).isFull()) {
             System.out.println("La colonne est déjà  complète !!");
             setColumn(chooseColumn(turnNumber), turnNumber);
-        }
-    }
-
-    /**
-     * Méthode récursive pour poser la lettre au sommet de la colonne
-     * @param column Index of the current column
-     * @param line Index which increment in order to obtain top
-     * @return Index of at the top of the column 
-     */
-    private int getTheLine(int column, int line) {
-
-        if (contenu.get(column).get(line) != " ") {
-            return getTheLine(column, line + 1);
         } else {
-            return line;
+            contenu.get(column).fill(getPlayerLetter(turnNumber));;
         }
     }
 
@@ -163,7 +147,7 @@ public class Grille {
      */
     public Boolean isFull() {
         for (int column = 0; column < contenu.size(); column++) {
-            if (columnIsNotFull(column)) {
+            if (!contenu.get(column).isFull()) {
                 return false;
             }
         }
@@ -196,10 +180,7 @@ public class Grille {
     private void getSizeGrid(int numberOfPlayer) {
         contenu = new ArrayList<>();
         for (int i = 0; i < nombreDeColonne; i++) {
-            ArrayList<String> colonne = new ArrayList<String>();
-            for (int j = 0; j < nombreDeLigne; j++) {
-                colonne.add(" ");
-            }
+            Colonne colonne = new Colonne(nombreDeLigne);
             contenu.add(colonne);
         }
     }
@@ -232,15 +213,6 @@ public class Grille {
     }
 
     /**
-     * Méthode pour savoir si une colonne n'est pas pleine ( et prêt a l'emploi ;) )
-     * @param column
-     * @return
-     */
-    private boolean columnIsNotFull(int column) {
-        return contenu.get(column).contains(" ");
-    }
-
-    /**
      * 
      * @param playerLetter
      * @param inversed
@@ -267,15 +239,15 @@ public class Grille {
      */
     private Boolean checkdiagonal(int colonne, int ligne, String playerLetter, Boolean inversed) {
         if (inversed) {
-            return contenu.get(colonne).get(ligne).equals(playerLetter)
-                    && contenu.get(colonne - 1).get(ligne + 1).equals(playerLetter)
-                    && contenu.get(colonne - 2).get(ligne + 2).equals(playerLetter)
-                    && contenu.get(colonne - 3).get(ligne + 3).equals(playerLetter);
+            return contenu.get(colonne).getArray()[ligne].equals(playerLetter)
+                    && contenu.get(colonne - 1).getArray()[ligne + 1].equals(playerLetter)
+                    && contenu.get(colonne - 2).getArray()[ligne + 2].equals(playerLetter)
+                    && contenu.get(colonne - 3).getArray()[ligne + 3].equals(playerLetter);
         }
-        return contenu.get(colonne).get(ligne).equals(playerLetter)
-                && contenu.get(colonne + 1).get(ligne + 1).equals(playerLetter)
-                && contenu.get(colonne + 2).get(ligne + 2).equals(playerLetter)
-                && contenu.get(colonne + 3).get(ligne + 3).equals(playerLetter);
+        return contenu.get(colonne).getArray()[ligne].equals(playerLetter)
+                && contenu.get(colonne + 1).getArray()[ligne + 1].equals(playerLetter)
+                && contenu.get(colonne + 2).getArray()[ligne + 2].equals(playerLetter)
+                && contenu.get(colonne + 3).getArray()[ligne + 3].equals(playerLetter);
 
     }
 
@@ -303,10 +275,10 @@ public class Grille {
      * @return
      */
     private Boolean checkline(int colonne, int ligne, String playerLetter) {
-        return contenu.get(colonne).get(ligne).equals(playerLetter)
-                && contenu.get(colonne + 1).get(ligne).equals(playerLetter)
-                && contenu.get(colonne + 2).get(ligne).equals(playerLetter)
-                && contenu.get(colonne + 3).get(ligne).equals(playerLetter);
+        return contenu.get(colonne).getArray()[ligne].equals(playerLetter)
+                && contenu.get(colonne + 1).getArray()[ligne].equals(playerLetter)
+                && contenu.get(colonne + 2).getArray()[ligne].equals(playerLetter)
+                && contenu.get(colonne + 3).getArray()[ligne].equals(playerLetter);
     }
 
     /**
@@ -333,9 +305,9 @@ public class Grille {
      * @return
      */
     private Boolean checkcolumn(int colonne, int ligne, String playerLetter) {
-        return contenu.get(colonne).get(ligne).equals(playerLetter)
-                && contenu.get(colonne).get(ligne + 1).equals(playerLetter)
-                && contenu.get(colonne).get(ligne + 2).equals(playerLetter)
-                && contenu.get(colonne).get(ligne + 3).equals(playerLetter);
+        return contenu.get(colonne).getArray()[ligne].equals(playerLetter)
+                && contenu.get(colonne).getArray()[ligne + 1].equals(playerLetter)
+                && contenu.get(colonne).getArray()[ligne + 2].equals(playerLetter)
+                && contenu.get(colonne).getArray()[ligne + 3].equals(playerLetter);
     }
 }
