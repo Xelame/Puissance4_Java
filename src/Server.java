@@ -7,12 +7,16 @@ import java.util.ArrayList;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.util.ArrayList;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 public class Server {
 
     public static int  nbClient =0;
     public static int  typeOfgame =2;
     public static SocketChannel clientSocket;
+    public static  boolean loose = false;
+
     
    
 
@@ -34,7 +38,7 @@ public class Server {
             while (numberOfClient < GameManager.numberOfPlayer) {
                 numberOfClient++;
                 Client client = new Client();
-                SocketChannel clientSocket = serverSocket.accept();
+                SocketChannel clientSocket = serverSocket.accept();                
                 System.out.println("Un client s'est connecté\nTotal : " + numberOfClient + " / " + GameManager.numberOfPlayer);
                 list.add(clientSocket);
                 listClient.add(client);
@@ -42,10 +46,13 @@ public class Server {
             }
 
             //TODO : envoi signal à chaque joueur --> la partie démarre
+            while(!loose){            
             for (int i=0; i < list.size(); i++){
-                //listClient.get(i).Ready();
-            }
+              list.get(i).open();
 
+              
+
+                
             //TODO : tant que loose == false, on fait tourner les joueurs
             
             //TODO : select player who play
@@ -57,6 +64,13 @@ public class Server {
             //TODO : actualise pour les autres joueurs (le notre est fait au préalable si donnée envoyé aux autres joueurs)
 
             //TODO : si pas victoire on passe au joueur suivant ... etc...
+               
+      
+            }
+
+
+        }
+
 
 
          

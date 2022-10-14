@@ -3,22 +3,54 @@ import java.io.UncheckedIOException;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.util.ArrayList;
+import java.io.BufferedReader;
+
+import java.io.InputStreamReader;
+
+import javax.swing.text.StyledEditorKit.BoldAction;
+
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.nio.channels.UnsupportedAddressTypeException;
 
 public class Client {
     static SocketChannel  clientSocket = null;
+    static Boolean firstCo = true;
     
     public static void main(String[] args){
 
 
         try{
-             clientSocket = SocketChannel.open();
+            if(firstCo){
+            clientSocket = SocketChannel.open();
             clientSocket.connect(new InetSocketAddress("localHost", 8000));
              //TODO : wait for other client
+             
              System.out.println("En attente de joueur la partie va bientôt démarrer ...");
+             firstCo = false;
+            } else {
+                boolean isCorrect = false;
 
+
+                System.out.println("START");
+
+                while(isCorrect){
+                    String message = promptForString();
+                    try {
+                        send(message);
+                        isCorrect = true;
+                    }
+                    catch(IOException e){
+                        System.err.println(e.toString());
+                    }
+                    
+                }
+
+           
+            //TODO : la partie démarre
+
+            //TODO : si à moi de jouer j'écris un char sinon j'attends 
+        }
              
              
                
@@ -41,6 +73,26 @@ public class Client {
         } catch(IOException e) {
             System.out.println("L'adresse entrée est invalide");
             connectToServer();
+        }
+    }
+
+    public static String promptForString(){
+        InputStreamReader bis = new InputStreamReader(System.in);
+        BufferedReader br = new BufferedReader(bis);
+        try {
+            return br.readLine();
+        }
+        catch(IOException e){
+            System.err.println("Something went wrong : " + e.getMessage());
+            System.err.println("Please retry : ");
+            return promptForString();
+        }
+    }
+
+    public static void send(String message) throws IOException{
+        ByteBuffer bytes = ByteBuffer.wrap(message.getBytes("UTF-8"));
+        while(bytes.hasRemaining()){
+            clientSocket.write(bytes);
         }
     }
 
