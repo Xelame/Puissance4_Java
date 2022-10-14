@@ -1,3 +1,4 @@
+package puissance4;
 import java.util.ArrayList;
 
 public final class Colonne {
