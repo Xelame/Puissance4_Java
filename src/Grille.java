@@ -92,7 +92,7 @@ public class Grille {
         }
 
         // Floor
-        affichage += "#".repeat(nombreDeColonne + 2) + "\n";
+        //affichage += "#".repeat(nombreDeColonne + 2) + "\n";
         affichage += " " + ALPHABET_MINUSCULE.substring(0, nombreDeColonne) + "\n";
 
         return affichage;
