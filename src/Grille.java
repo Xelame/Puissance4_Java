@@ -1,7 +1,5 @@
 import java.util.ArrayList;
 
-import javax.sound.sampled.Line;
-
 public class Grille {
 
     /**
@@ -35,11 +33,11 @@ public class Grille {
     /**
      * Size of our grid : width
      */
-    private int nombreDeColonne;
+    private final int nombreDeColonne = GameManager.numberOfPlayer * 4;
     /**
      * Size of our grid : height
      */
-    private int nombreDeLigne;
+    private final int nombreDeLigne = Math.round(GameManager.numberOfPlayer * 3.2f);
 
     /**
      * Des Constantes d'alphabet pour une lecture plus lisible de notre code vous
@@ -59,15 +57,16 @@ public class Grille {
     private ArrayList<Colonne> contenu;
 
     /**
-     * Constructeur privée ( toi même tu sais ;) )
+     * Constructeur privée (nécéssite d'avoir choisie le nombre de joueur au préalable)
+     * @see GameManager.choosePlayerNumber()
      */
     private Grille() {
-        nombreDeJoueur = choosePlayerNumber();
-        System.out.println(toString());
-
-        // TODO : Trouver des éléments permetant d'utiliser des classe
-        // car notre projet ne suis pas vraiment le principe de POO :/ 💭
-
+        // FIXME : Mettre la demande de choix de joueur ici je pense
+        try {
+            createGrid();
+        } catch (Exception e) {
+            System.err.println(e.toString());
+        }
     }
 
     /**
@@ -97,26 +96,6 @@ public class Grille {
         affichage += " " + ALPHABET_MINUSCULE.substring(0, nombreDeColonne) + "\n";
 
         return affichage;
-    }
-
-    // TODO : La loop de jeu ✅
-    public void Play() {
-        int turnNumber = 0;
-        Boolean isRunning = true;
-        // TODO : Mettre la condition de fin ici
-        while (isRunning) {
-            // TODO : Faire l'interaction voulu :)
-            String laLettreQueNousDonneLeJoueur = chooseColumn(turnNumber);
-            fillColumn(laLettreQueNousDonneLeJoueur, turnNumber);
-            if (isFull()
-                    || diagonalWin(getPlayerLetter(turnNumber), true)
-                    || diagonalWin(getPlayerLetter(turnNumber), false)
-                    || lineWin(getPlayerLetter(turnNumber))
-                    || columnWin(getPlayerLetter(turnNumber))) {
-                isRunning = !isRunning;
-            }
-            turnNumber++;
-        }
     }
 
     /**
@@ -160,34 +139,18 @@ public class Grille {
     }
 
     /**
-     * Ask the user how many players are there
-     * 
-     * @return Number of player choosen
-     */
-    private int choosePlayerNumber() {
-        // TODO : Demander au l'utilisateur combien sont-ils ? ✅
-        int players = App.promptForInt("Veuillez entrer le nombre de joueurs (2 ou 3)");
-        if (2 <= players && players <= 3) {
-            nombreDeColonne = players * 4;
-            nombreDeLigne = Math.round(players * 3.2f);
-            getSizeGrid(players);
-        } else {
-            System.err.println("Please input a valid number");
-            choosePlayerNumber();
-        }
-        return players;
-    }
-
-    /**
      * Fill the grid of empty slots in terms of number of players
      * 
-     * @param numberOfPlayer
      */
-    private void getSizeGrid(int numberOfPlayer) {
-        contenu = new ArrayList<>();
-        for (int i = 0; i < nombreDeColonne; i++) {
-            Colonne colonne = new Colonne(nombreDeLigne);
-            contenu.add(colonne);
+    private void createGrid() throws Exception {
+        contenu = new ArrayList<Colonne>();
+        if (nombreDeColonne == 0 || nombreDeLigne == 0) {
+            throw new Exception("Le nombre de joueur n'as pas été choisi au préalable");
+        } else {
+            for (int i = 0; i < nombreDeColonne; i++) {
+                Colonne colonne = new Colonne(nombreDeLigne);
+                contenu.add(colonne);
+            }
         }
     }
 
@@ -197,7 +160,7 @@ public class Grille {
      * @param turn
      * @return a Letter corresponding to the player
      */
-    private String getPlayerLetter(int turn) {
+    String getPlayerLetter(int turn) {
         return LISTE_DE_JOUEUR[turn % nombreDeJoueur];
     }
 
@@ -207,8 +170,8 @@ public class Grille {
      * @param turn
      * @return a Letter corresponding to the column choosen
      */
-    private String chooseColumn(int turn) {
-        String choice = App
+    public String chooseColumn(int turn) {
+        String choice = GameManager
                 .promptForString("Joueur " + getPlayerLetter(turn) + " choisissez une colonne :\n" + toString());
         if ((ALPHABET_MINUSCULE.substring(0, nombreDeColonne).contains(choice)
                 || ALPHABET_MAJUSCULE.substring(0, nombreDeColonne).contains(choice))
@@ -326,4 +289,5 @@ public class Grille {
             || lineWin(character)
             || columnWin(character);
     }
+
 }
