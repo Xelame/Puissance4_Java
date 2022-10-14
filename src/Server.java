@@ -41,10 +41,22 @@ public class Server {
                
             }
 
-            //TODO : envoi signal la partie démarre
+            //TODO : envoi signal à chaque joueur --> la partie démarre
             for (int i=0; i < list.size(); i++){
                 //listClient.get(i).Ready();
             }
+
+            //TODO : tant que loose == false, on fait tourner les joueurs
+            
+            //TODO : select player who play
+
+            //TODO : demande d'écrire
+
+            //TODO : reçoit lettre
+
+            //TODO : actualise pour les autres joueurs (le notre est fait au préalable si donnée envoyé aux autres joueurs)
+
+            //TODO : si pas victoire on passe au joueur suivant ... etc...
 
 
          
