@@ -1,5 +1,5 @@
+package puissance4;
 import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.util.ArrayList;
@@ -11,7 +11,6 @@ import javax.swing.text.StyledEditorKit.BoldAction;
 
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
-import java.nio.channels.UnsupportedAddressTypeException;
 
 public class Client {
     static SocketChannel  clientSocket = null;
