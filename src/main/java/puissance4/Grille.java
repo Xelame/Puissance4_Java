@@ -1,4 +1,4 @@
-package puissance4;
+package main.java.puissance4;
 import java.util.ArrayList;
 
 public class Grille {
@@ -11,12 +11,13 @@ public class Grille {
     /**
      * La liste de lettre pour les possibles joueurs
      */
-    private static final String[] LISTE_DE_JOUEUR = { "O", "X", "V" };
+    private static final String[] LISTE_DE_JOUEUR = { textColor.ANSI_CYAN+"O"+textColor.ANSI_RESET, textColor.ANSI_GREEN+"X"+textColor.ANSI_RESET, textColor.ANSI_PURPLE+"V"+textColor.ANSI_RESET };
 
     /**
      * Le nombre de joueurs qui vont jouer
      */
     private static int nombreDeJoueur;
+
 
     /**
      * Méthode qui créer une seule unique instance de notre classe
@@ -81,21 +82,29 @@ public class Grille {
         for (int indexLigne = nombreDeLigne - 1; indexLigne >= 0; indexLigne--) {
 
             // Line
-            affichage += "#";
+            affichage += textColor.ANSI_WHITE_BACKGROUND+"#"+textColor.ANSI_RESET;
             String ligne = "";
             for (int indexColonne = 0; indexColonne < nombreDeColonne; indexColonne++) {
                 Colonne colonne = contenu.get(indexColonne);
                 ligne += colonne.getArray()[indexLigne];
             }
             affichage += ligne;
-            affichage += "#\n";
+            affichage += textColor.ANSI_WHITE_BACKGROUND+"#"+textColor.ANSI_RESET+"\n";
 
         }
 
         // Floor
+        if(GameManager.numberOfPlayer == 2){
+            affichage += textColor.ANSI_WHITE_BACKGROUND+"##########"+textColor.ANSI_RESET+"\n";
+        } else {
+            affichage += textColor.ANSI_WHITE_BACKGROUND+"############"+textColor.ANSI_RESET+"\n";
+
+
+        }
         //affichage += "#".repeat(nombreDeColonne + 2) + "\n";
         affichage += " " + ALPHABET_MINUSCULE.substring(0, nombreDeColonne) + "\n";
 
+      
         return affichage;
     }
 
@@ -117,7 +126,7 @@ public class Grille {
         int column = ALPHABET_MINUSCULE.indexOf(nomColonne.toLowerCase());
 
         if (contenu.get(column).isFull()) {
-            System.out.println("La colonne est déjà  complète !!");
+            System.out.println(textColor.ANSI_RED+"La colonne est déjà  complète !!"+textColor.ANSI_RESET);
             fillColumn(chooseColumn(turnNumber), turnNumber);
         } else {
             contenu.get(column).fill(getPlayerLetter(turnNumber));
@@ -162,7 +171,7 @@ public class Grille {
      * @return a Letter corresponding to the player
      */
     String getPlayerLetter(int turn) {
-        return LISTE_DE_JOUEUR[turn % nombreDeJoueur];
+        return textColor.ANSI_WHITE+LISTE_DE_JOUEUR[turn % GameManager.numberOfPlayer]+textColor.ANSI_RESET;
     }
 
     /**
@@ -172,6 +181,7 @@ public class Grille {
      * @return a Letter corresponding to the column choosen
      */
     public String chooseColumn(int turn) {
+        System.out.println("\n"+textColor.ANSI_WHITE_BACKGROUND+"==================================="+textColor.ANSI_RESET);
         String choice = GameManager
                 .promptForString("Joueur " + getPlayerLetter(turn) + " choisissez une colonne :\n" + toString());
         if ((ALPHABET_MINUSCULE.substring(0, nombreDeColonne).contains(choice)
@@ -179,8 +189,10 @@ public class Grille {
                 && choice.length() > 0) {
             return choice;
         } else {
-            System.err.println("Choisissez un emplacement valide (avec la lettre correspondante) ");
+            System.err.println(textColor.ANSI_RED+"Choisissez un emplacement valide (avec la lettre correspondante) "+textColor.ANSI_RESET);
             return chooseColumn(turn);
+
+            
         }
     }
 

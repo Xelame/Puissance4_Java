@@ -1,4 +1,4 @@
-package puissance4;
+package main.java.puissance4;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -40,9 +40,11 @@ public class GameManager {
     }
 
     public static void localPlay() {
+        choosePlayerNumber();
         Grille grille = Grille.getInstance();
         int turnNumber = 0;
         Boolean isRunning = true;
+       
         while (isRunning) {
             String laLettreQueNousDonneLeJoueur = grille.chooseColumn(turnNumber);
             grille.fillColumn(laLettreQueNousDonneLeJoueur, turnNumber);
@@ -51,10 +53,17 @@ public class GameManager {
             }
             turnNumber++;
         }
+
+        //TODO : savoir qui win !
+        //TODO : tel player win
+        System.out.println("\n" + textColor.ANSI_YELLOW +"  win !! "+textColor.ANSI_RESET);    
+
     }
 
     public static void chooseCommunication() {
-        int choice = promptForInt("Puissance 4 - Multiplayer \n1 - Local\n2 - Reseau");
+
+        System.out.println("\n" + "Welcome in Puissance 4 - Multiplayer," + textColor.ANSI_YELLOW +"  make a choice : "+textColor.ANSI_RESET);       
+        int choice = promptForInt(textColor.ANSI_YELLOW+"1"+textColor.ANSI_RESET +" - Local\n"+textColor.ANSI_YELLOW+"2"+textColor.ANSI_RESET +" - Reseau");
         switch (choice) {
             case 1:
                 localPlay();
@@ -90,7 +99,7 @@ public class GameManager {
      * @return Number of player choosen
      */
     public static void choosePlayerNumber() {
-        numberOfPlayer = promptForInt("Veuillez entrer le nombre de joueurs (2 ou 3)");
+        numberOfPlayer = promptForInt("Veuillez entrer le nombre de joueurs ("+textColor.ANSI_YELLOW +"2"+textColor.ANSI_RESET+" ou "+textColor.ANSI_YELLOW +"3"+textColor.ANSI_RESET+")");
         if (numberOfPlayer != 2 && numberOfPlayer != 3) {
             System.err.println("Please input a valid number");
             choosePlayerNumber();

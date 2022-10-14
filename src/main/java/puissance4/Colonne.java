@@ -1,4 +1,4 @@
-package puissance4;
+package main.java.puissance4;
 import java.util.ArrayList;
 
 public final class Colonne {
