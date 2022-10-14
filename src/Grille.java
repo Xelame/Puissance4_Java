@@ -105,7 +105,7 @@ public class Grille {
         while (isRunning) {
             // TODO : Faire l'interaction voulu :)
             String laLettreQueNousDonneLeJoueur = chooseColumn(turnNumber);
-            setColumn(laLettreQueNousDonneLeJoueur, turnNumber);
+            fillColumn(laLettreQueNousDonneLeJoueur, turnNumber);
             if (isFull()
                     || diagonalWin(getPlayerLetter(turnNumber), true)
                     || diagonalWin(getPlayerLetter(turnNumber), false)
@@ -119,10 +119,11 @@ public class Grille {
 
     /**
      * Méthode qui ajoute la pièce du joueur sur la colonne selectionner
-     * @param nomColonne a String correspond to the column choosed by user 
+     * 
+     * @param nomColonne a String correspond to the column choosed by user
      * @param turnNumber ... on te voit souvent toi
      */
-    public void setColumn(String nomColonne, int turnNumber) {
+    public void fillColumn(String nomColonne, int turnNumber) {
 
         // ! Bien vu, hélas méthode déprécié malgré les comms (＞﹏＜)
         // en ascii a = 97 et z = 122 donc on va de a à j c'est à dire de 97 à 106
@@ -135,14 +136,16 @@ public class Grille {
 
         if (contenu.get(column).isFull()) {
             System.out.println("La colonne est déjà  complète !!");
-            setColumn(chooseColumn(turnNumber), turnNumber);
+            fillColumn(chooseColumn(turnNumber), turnNumber);
         } else {
-            contenu.get(column).fill(getPlayerLetter(turnNumber));;
+            contenu.get(column).fill(getPlayerLetter(turnNumber));
+            ;
         }
     }
 
     /**
      * Méthode qui test si la grille est pleine
+     * 
      * @return Boolean response if the grid is full
      */
     public Boolean isFull() {
@@ -156,6 +159,7 @@ public class Grille {
 
     /**
      * Ask the user how many players are there
+     * 
      * @return Number of player choosen
      */
     private int choosePlayerNumber() {
@@ -169,12 +173,12 @@ public class Grille {
             System.err.println("Please input a valid number");
             choosePlayerNumber();
         }
-
         return players;
     }
 
     /**
      * Fill the grid of empty slots in terms of number of players
+     * 
      * @param numberOfPlayer
      */
     private void getSizeGrid(int numberOfPlayer) {
@@ -187,6 +191,7 @@ public class Grille {
 
     /**
      * Méthode qui donne la lettre que joue un joueur en fonction du tour de jeu
+     * 
      * @param turn
      * @return a Letter corresponding to the player
      */
@@ -196,6 +201,7 @@ public class Grille {
 
     /**
      * Ask the current player which column he choose
+     * 
      * @param turn
      * @return a Letter corresponding to the column choosen
      */
@@ -309,5 +315,13 @@ public class Grille {
                 && contenu.get(colonne).getArray()[ligne + 1].equals(playerLetter)
                 && contenu.get(colonne).getArray()[ligne + 2].equals(playerLetter)
                 && contenu.get(colonne).getArray()[ligne + 3].equals(playerLetter);
+    }
+
+    public Boolean isRunning(String character) {
+        return isFull()
+            || diagonalWin(character, true)
+            || diagonalWin(character, false)
+            || lineWin(character)
+            || columnWin(character);
     }
 }
