@@ -47,8 +47,8 @@ public class Server {
                     } else {
                         broadcast("Turn", player);
                     }
-                    broadcast("Your turn " + GameManager.getPlayerLetter(playerSize), player);
                 }
+                broadcast("Your turn " + GameManager.getPlayerLetter(playerSize), havePlayed);
                 String Message = "";
                 try {
                     Message = Client.listen(havePlayed);

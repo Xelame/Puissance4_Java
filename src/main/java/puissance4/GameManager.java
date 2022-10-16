@@ -152,8 +152,8 @@ public class GameManager {
         return LISTE_DE_JOUEUR[turn % numberOfPlayer];
     }
 
-    public static void JouerLigne(ArrayList<Colonne> Grid,String player, String indexString ) {
+    public static void JouerLigne(Grid Grid,String player, String indexString ) {
         int index = "abcdefghijklm".indexOf(indexString);
-        Grid.get(index).fill(player);
+        Grid.content.get(index).fill(player);
     }
 }
