@@ -1,4 +1,5 @@
 package puissance4;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
@@ -6,33 +7,65 @@ import java.nio.channels.SocketChannel;
 
 public class Client {
 
-    SocketChannel clientSocket;
+    public SocketChannel clientSocket;
+    private Grid grille;
+    private int numberOfPlayer;
 
     public Client() {
         try {
             clientSocket = SocketChannel.open();
             connectToServer();
-            String message = GameManager.promptForString("choississez une lettre entre de a à g");
-            ByteBuffer bytes = ByteBuffer.wrap(message.getBytes("UTF-8"));
-            while (bytes.hasRemaining()) {
-                clientSocket.write(bytes);
-                clientSocket.close();
+
+            numberOfPlayer = Integer.parseInt(String.valueOf(listen(clientSocket).charAt(0)));
+            grille = new Grid(numberOfPlayer);
+
+            Boolean isRunning = true;
+            while (isRunning) {
+                if (grille.isRunning(GameManager.getPlayerLetter(numberOfPlayer))) {
+                    isRunning = !isRunning;
+                }
+                String turncall = listen(clientSocket);
+                System.out.println(turncall);
+                if (turncall.charAt(0) == 'Y') {
+                    String response = GameManager.chooseColumn(grille, numberOfPlayer);
+                    write(response, clientSocket);
+                }
+                String adversaire = listen(clientSocket);
+                grille.fillColumn(adversaire);
+                grille.toString();
+                GameManager.turn++;
             }
         } catch (IOException e) {
             System.err.println(e.toString());
         }
-        // en boucle, on peut en attendre une suivante en attendant que quelqu'une
-        // d'autre se connecte : pour l'instant on se connecte et hop ça arrête le
-        // programme, faisons mieux !
     }
 
     public void connectToServer() {
         String choice = GameManager.promptForString("Entrer l'IP du serveur voulu :");
         try {
             clientSocket.connect(new InetSocketAddress(choice, 4004));
-        } catch(IOException e) {
+            System.out.println("Vous êtes connectée !");
+        } catch (IOException e) {
             System.out.println("L'adresse entrée est invalide");
             connectToServer();
+        }
+    }
+
+    static public String listen(SocketChannel clientSocket) throws IOException {
+        ByteBuffer bytes = ByteBuffer.allocate(1024);
+        int bytesRead = clientSocket.read(bytes);
+        if (bytesRead <= 0) {
+            clientSocket.close();
+            return "";
+        }
+        String message = new String(bytes.array());
+        return message;
+    }
+
+    public void write(String message, SocketChannel socket) throws IOException {
+        ByteBuffer bytes = ByteBuffer.wrap(message.getBytes());
+        while (bytes.hasRemaining()) {
+            socket.write(bytes);
         }
     }
 }
