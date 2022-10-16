@@ -1,12 +1,7 @@
-package main.java.puissance4;
+package puissance4;
 import java.util.ArrayList;
 
 public class Grille {
-
-    /**
-     * L'instance (la seule l'unique) de notre classe
-     */
-    private static Grille instance;
 
     /**
      * La liste de lettre pour les possibles joueurs
@@ -17,20 +12,6 @@ public class Grille {
      * Le nombre de joueurs qui vont jouer
      */
     private static int nombreDeJoueur;
-
-
-    /**
-     * Méthode qui créer une seule unique instance de notre classe
-     * 
-     * @return L'unique instance de la classe
-     * @see Grille
-     */
-    public static Grille getInstance() {
-        if (instance == null) {
-            instance = new Grille();
-        }
-        return instance;
-    }
 
     /**
      * Size of our grid : width
@@ -62,8 +43,8 @@ public class Grille {
      * Constructeur privée (nécéssite d'avoir choisie le nombre de joueur au préalable)
      * @see GameManager.choosePlayerNumber()
      */
-    private Grille() {
-        // FIXME : Mettre la demande de choix de joueur ici je pense
+    public Grille(int playerNumber) {
+        
         try {
             createGrid();
         } catch (Exception e) {
