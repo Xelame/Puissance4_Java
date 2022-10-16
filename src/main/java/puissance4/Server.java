@@ -8,6 +8,8 @@ import java.nio.ByteBuffer;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 public class Server {
@@ -35,37 +37,57 @@ public class Server {
         }
         // players = shufflePlayers(players);
         Boolean isRunning = true;
-            while(isRunning) {
-                if (grille.isRunning(GameManager.getPlayerLetter(playerSize))) {
-                    isRunning = !isRunning;
-                }
-                SocketChannel havePlayed = null;
-                for (int index = 0; index < players.size() ; index++) {
-                    SocketChannel player = players.get(index);
-                    if (GameManager.turn % playerSize == index) {
-                        havePlayed = player;
-                    } else {
-                        broadcast("Turn", player);
+        Joueurs currentJ = RandomBegin(playerSize);
+        Map<Joueurs, SocketChannel> dictionary = new HashMap<Joueurs, SocketChannel>();
+        for (int i = 0; i < playerSize; i++) {
+            Joueurs player;
+            if (i == 0) {
+                player = Joueurs.J1;
+            } else if (i == 1) {
+                player = Joueurs.J2;
+            } else {
+                player = Joueurs.J3;
+            }
+            dictionary.put(player, players.get(i));
+        }
+
+        while (isRunning) {
+            if (grille.isRunning(GameManager.getPlayerLetter(playerSize))) {
+                isRunning = !isRunning;
+            }
+            SocketChannel havePlayed = null;
+            grille.toString();
+
+            for (SocketChannel socketChannel : players) {
+                if (socketChannel == dictionary.get(currentJ)) { // if it's the turn to the playerSocket
+                    switch (currentJ) {// we see what Player is the client and send him a X, O, V
+                        case J1:
+                            broadcast("Your turn X", socketChannel);
+                            break;
+                        case J2:
+                            broadcast("Your turn O", socketChannel);
+                            break;
+                        default:
+                            broadcast("Your turn V", socketChannel);
+                            break;
                     }
-                }
-                broadcast("Your turn " + GameManager.getPlayerLetter(playerSize), havePlayed);
-                String Message = "";
-                try {
-                    Message = Client.listen(havePlayed);
-                } catch (IOException e) {
-                    System.err.println("Player disconnected");
-                }
-
-                for (SocketChannel socketChannel : players) {
-                    broadcast(Message, socketChannel);
-                }
-
-                GameManager.turn++;
-
-                if (Message != "") {
-
+                } else {
                 }
             }
+
+            String Message = "";
+
+
+            for (SocketChannel socketChannel : players) {
+                broadcast(Message, socketChannel);
+            }
+
+            Next(playerSize, currentJ);
+
+            if (Message != "") {
+                GameManager.JouerLigne(grille, String.valueOf(Message.charAt(5)), String.valueOf(Message.charAt(8)));
+            }
+        }
 
     }
 
@@ -110,14 +132,32 @@ public class Server {
         }
     }
 
-    private ArrayList<SocketChannel> shufflePlayers(ArrayList<SocketChannel> array) {
-        Random rand = new Random();
-		for (int i = 0; i < array.size(); i++) {
-			int randomIndexToSwap = rand.nextInt(array.size());
-			SocketChannel temp = array.get(randomIndexToSwap);
-			array.set(randomIndexToSwap, array.get(i));
-			array.set(i, temp);
-		}
-        return array;
+    public static Joueurs RandomBegin(int playerNb) {
+        Random rnd = new Random();
+        int random = rnd.nextInt(playerNb);
+        switch (random) {
+            case 0:
+                return Joueurs.J1;
+            case 1:
+                return Joueurs.J2;
+            default:
+                return Joueurs.J3;
+        }
     }
+
+    public static Joueurs Next(int playerNb, Joueurs player) {
+        switch (player) {
+            case J1:
+                return Joueurs.J2;
+            case J2:
+                if (playerNb == 3) {
+                    return Joueurs.J3;
+                }
+                return Joueurs.J1;
+            case J3:
+                return Joueurs.J1;
+        }
+        return Next(playerNb, player);
+    }
+
 }

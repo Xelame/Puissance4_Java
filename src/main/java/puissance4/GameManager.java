@@ -153,7 +153,8 @@ public class GameManager {
     }
 
     public static void JouerLigne(Grid Grid,String player, String indexString ) {
-        int index = "abcdefghijklm".indexOf(indexString);
+        System.out.println("Hello : " + indexString);
+        int index = "abcdefghijklm".indexOf(indexString.trim());
         Grid.content.get(index).fill(player);
     }
 }

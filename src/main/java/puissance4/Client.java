@@ -8,31 +8,29 @@ import java.nio.channels.SocketChannel;
 public class Client {
 
     public SocketChannel clientSocket;
-    private Grid grille;
     private int numberOfPlayer;
 
     public Client() {
         try {
             clientSocket = SocketChannel.open();
             connectToServer();
-
             numberOfPlayer = Integer.parseInt(String.valueOf(listen(clientSocket).charAt(0)));
-            grille = new Grid(numberOfPlayer);
+            Grid grille = new Grid(numberOfPlayer);
 
             Boolean isRunning = true;
-            String turncall = listen(clientSocket);
             while (isRunning) {
-                if (grille.isRunning(GameManager.getPlayerLetter(numberOfPlayer))) {
-                    isRunning = !isRunning;
+                String turncall = listen(clientSocket);
+                if (turncall.split(" ")[0].equals("Your")) {
+                    if (grille.isRunning(turncall.split(" ")[2])) {
+                        isRunning = !isRunning;
+                    }
+                    System.out.println(turncall);
+                    write("Turn " + turncall.split(" ")[2] + " " + chooseColumn(grille, numberOfPlayer), clientSocket);
                 }
-                if (turncall.charAt(0) == 'Y') {
-                    String response = chooseColumn(grille, numberOfPlayer);
-                    write(response, clientSocket);
-                }
-                String adversaire = listen(clientSocket);
-                GameManager.JouerLigne(grille, turncall, adversaire);
+                String[] adversaire = listen(clientSocket).split(" ");
+                
+                GameManager.JouerLigne(grille, adversaire[1], adversaire[2]);
                 grille.toString();
-                GameManager.turn++;
             }
         } catch (IOException e) {
             System.err.println(e.toString());
@@ -70,7 +68,7 @@ public class Client {
 
     public String chooseColumn(Grid grille, int numberOfPlayer) {
         String choice = GameManager
-                .promptForString("Your Turn " + GameManager.getPlayerLetter(numberOfPlayer) + "\n" + grille.toString());
+                .promptForString(grille.toString());
         if ((GameManager.ALPHABET_MINUSCULE.substring(0, grille.columnNumber).contains(choice)
                 || GameManager.ALPHABET_MAJUSCULE.substring(0, grille.columnNumber).contains(choice))
                 && choice.length() > 0) {
