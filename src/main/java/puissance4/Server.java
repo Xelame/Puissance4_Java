@@ -9,18 +9,15 @@ import java.util.ArrayList;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.util.ArrayList;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.util.Random;
 
 public class Server {
 
-    public static int  nbClient =0;
-    public static int  typeOfgame =2;
-    public static SocketChannel clientSocket;
-    public static  boolean loose = false;
+    Grid grille;
 
-    
-   
+    int playerSize = GameManager.choosePlayerNumber();
+
+    static ArrayList<SocketChannel> players = new ArrayList<SocketChannel>();
 
     public Server() {
         getMyIpAddress();
@@ -28,61 +25,61 @@ public class Server {
     }
 
     public void Run() {
-        GameManager.choosePlayerNumber();
-        Grille grille = Grille.getInstance();
+        grille = new Grid(playerSize);
         try {
-            int numberOfClient = 0;
-            ArrayList<SocketChannel> list = new ArrayList<SocketChannel>();
-            ArrayList<Client> listClient = new ArrayList<Client>();
             ServerSocketChannel serverSocket = ServerSocketChannel.open();
             serverSocket.bind(new InetSocketAddress(8000));
             System.out.println("En attente de joueur ...");
-            while (numberOfClient < GameManager.numberOfPlayer) {
-                numberOfClient++;
-                Client client = new Client();
-                SocketChannel clientSocket = serverSocket.accept();                
-                System.out.println("Un client s'est connecté\nTotal : " + numberOfClient + " / " + GameManager.numberOfPlayer);
-                list.add(clientSocket);
-                listClient.add(client);
-               
-            }
-
-            //TODO : envoi signal à chaque joueur --> la partie démarre
-            while(!loose){            
-            for (int i=0; i < list.size(); i++){
-              list.get(i).open();
-
-              
-
-                
-            //TODO : tant que loose == false, on fait tourner les joueurs
-            
-            //TODO : select player who play
-
-            //TODO : demande d'écrire
-
-            //TODO : reçoit lettre
-
-            //TODO : actualise pour les autres joueurs (le notre est fait au préalable si donnée envoyé aux autres joueurs)
-
-            //TODO : si pas victoire on passe au joueur suivant ... etc...
-               
-      
-            }
-
-
-        }
-
-
-
-         
-
+            connection(players, serverSocket);
         } catch (IOException e) {
             System.err.println(e.toString());
         }
+        // players = shufflePlayers(players);
+        Boolean isRunning = true;
+            while(isRunning) {
+                if (grille.isRunning(GameManager.getPlayerLetter(playerSize))) {
+                    isRunning = !isRunning;
+                }
+                SocketChannel havePlayed = null;
+                for (int index = 0; index < players.size() ; index++) {
+                    SocketChannel player = players.get(index);
+                    if (GameManager.turn % playerSize == index) {
+                        havePlayed = player;
+                    } else {
+                        broadcast("Turn", player);
+                    }
+                }
+                broadcast("Your turn " + GameManager.getPlayerLetter(playerSize), havePlayed);
+                String Message = "";
+                try {
+                    Message = Client.listen(havePlayed);
+                } catch (IOException e) {
+                    System.err.println("Player disconnected");
+                }
+
+                for (SocketChannel socketChannel : players) {
+                    broadcast(Message, socketChannel);
+                }
+
+                GameManager.turn++;
+
+                if (Message != "") {
+
+                }
+            }
+
     }
 
-    public void Listen(SocketChannel clientSocket) throws IOException {
+    private void connection(ArrayList<SocketChannel> list, ServerSocketChannel serverSocket) throws IOException {
+        while (list.size() < playerSize) {
+            SocketChannel clientSocket = serverSocket.accept();
+            broadcast(Integer.toString(playerSize), clientSocket);
+            list.add(clientSocket);
+            System.out.println("Un client s'est connecté\nTotal : " + list.size() + " / " + playerSize);
+        }
+    }
+
+    public void listen(SocketChannel clientSocket) throws IOException {
         ByteBuffer bytes = ByteBuffer.allocate(1024);
         int bytesRead = clientSocket.read(bytes);
         if (bytesRead <= 0) {
@@ -93,6 +90,17 @@ public class Server {
         System.out.println(message);
     }
 
+    public void broadcast(String message, SocketChannel clientSocket) {
+        try {
+            ByteBuffer bytes = ByteBuffer.wrap(message.getBytes());
+            while (bytes.hasRemaining()) {
+                clientSocket.write(bytes);
+            }
+        } catch (IOException e) {
+            System.err.println(e.toString());
+        }
+    }
+
     public void getMyIpAddress() {
         try {
             InetAddress ip = InetAddress.getLocalHost();
@@ -101,5 +109,16 @@ public class Server {
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
+    }
+
+    private ArrayList<SocketChannel> shufflePlayers(ArrayList<SocketChannel> array) {
+        Random rand = new Random();
+		for (int i = 0; i < array.size(); i++) {
+			int randomIndexToSwap = rand.nextInt(array.size());
+			SocketChannel temp = array.get(randomIndexToSwap);
+			array.set(randomIndexToSwap, array.get(i));
+			array.set(i, temp);
+		}
+        return array;
     }
 }
