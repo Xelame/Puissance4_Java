@@ -20,18 +20,17 @@ public class Client {
             grille = new Grid(numberOfPlayer);
 
             Boolean isRunning = true;
+            String turncall = listen(clientSocket);
             while (isRunning) {
                 if (grille.isRunning(GameManager.getPlayerLetter(numberOfPlayer))) {
                     isRunning = !isRunning;
                 }
-                String turncall = listen(clientSocket);
-                System.out.println(turncall);
                 if (turncall.charAt(0) == 'Y') {
                     String response = GameManager.chooseColumn(grille, numberOfPlayer);
                     write(response, clientSocket);
                 }
                 String adversaire = listen(clientSocket);
-                grille.fillColumn(adversaire);
+                GameManager.JouerLigne(grille.content, turncall, adversaire);
                 grille.toString();
                 GameManager.turn++;
             }

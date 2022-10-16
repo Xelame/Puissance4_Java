@@ -44,10 +44,10 @@ public class Server {
                     SocketChannel player = players.get(index);
                     if (GameManager.turn % playerSize == index) {
                         havePlayed = player;
-                        broadcast("Your turn " + GameManager.getPlayerLetter(playerSize), player);
                     } else {
                         broadcast("Turn", player);
                     }
+                    broadcast("Your turn " + GameManager.getPlayerLetter(playerSize), player);
                 }
                 String Message = "";
                 try {

@@ -2,6 +2,7 @@ package puissance4;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 public class GameManager {
 
@@ -149,5 +150,10 @@ public class GameManager {
      */
     public static String getPlayerLetter(int numberOfPlayer) {
         return LISTE_DE_JOUEUR[turn % numberOfPlayer];
+    }
+
+    public static void JouerLigne(ArrayList<Colonne> Grid,String player, String indexString ) {
+        int index = "abcdefghijklm".indexOf(indexString);
+        Grid.get(index).fill(player);
     }
 }

@@ -16,7 +16,7 @@ public class Grid {
     /**
      * Le contenu de la grille
      */
-    private ArrayList<Colonne> content;
+    public ArrayList<Colonne> content;
 
     private int numberOfPlayer;
 
@@ -67,8 +67,15 @@ public class Grid {
      * @param turnNumber ... on te voit souvent toi
      */
     public void fillColumn(String nomColonne) {
-        int column = GameManager.ALPHABET_MINUSCULE.indexOf(nomColonne.trim().toLowerCase());
+        int column = -1;
+        for (int index = 0; index < GameManager.ALPHABET_MINUSCULE.length(); index++) {
+            if (GameManager.ALPHABET_MINUSCULE.split("")[index].equals(nomColonne.trim().toLowerCase())) {
+                column = index;
+            }
+            
+        }
 
+        System.out.println(column);
         if (content.get(column).isFull()) {
             System.out.println("La colonne est déjà  complète !!");
             fillColumn(GameManager.chooseColumn(this, numberOfPlayer));
