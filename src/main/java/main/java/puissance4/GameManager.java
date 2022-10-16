@@ -53,10 +53,7 @@ public class GameManager {
             }
             turnNumber++;
         }
-
-        //TODO : savoir qui win !
-        //TODO : tel player win
-        System.out.println("\n" + textColor.ANSI_YELLOW +"  win !! "+textColor.ANSI_RESET);    
+     
 
     }
 
