@@ -1,14 +1,32 @@
-package main.java.puissance4;
+package puissance4;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class GameManager {
 
-    static int numberOfPlayer;
+    /**
+     * Des Constantes d'alphabet pour une lecture plus lisible de notre code vous
+     * verrez 🦚
+     */
+    public static final String ALPHABET_MINUSCULE = "abcdefghijklmnopqrstuvwxyz";
+
+    /**
+     * Des Constantes d'alphabet pour une lecture plus lisible de notre code vous
+     * verrez 🦚
+     */
+    public static final String ALPHABET_MAJUSCULE = ALPHABET_MINUSCULE.toUpperCase();
+
+    /**
+     * La liste de lettre pour les possibles joueurs
+     */
+    private static final String[] LISTE_DE_JOUEUR = { "O", "X", "V" };
+
+    public static int turn;
 
     public static void main(String[] args) throws Exception {
-        chooseCommunication();
+        GameManager manager = new GameManager();
+        manager.chooseCommunication();
     }
 
     // Méthode pour Afficher proprement une question et récuperer une valeur de type
@@ -39,28 +57,36 @@ public class GameManager {
         }
     }
 
-    public static void localPlay() {
-        choosePlayerNumber();
-        Grille grille = Grille.getInstance();
-        int turnNumber = 0;
+    public void localPlay() {
+        int numberOfPlayer = choosePlayerNumber();
+        Grid grille = new Grid(numberOfPlayer);
         Boolean isRunning = true;
        
         while (isRunning) {
-            String laLettreQueNousDonneLeJoueur = grille.chooseColumn(turnNumber);
-            grille.fillColumn(laLettreQueNousDonneLeJoueur, turnNumber);
-            if (grille.isRunning(grille.getPlayerLetter(turnNumber))) {
+            String laLettreQueNousDonneLeJoueur = chooseColumn(grille, numberOfPlayer);
+            grille.fillColumn(laLettreQueNousDonneLeJoueur);
+            if (grille.isRunning(getPlayerLetter(numberOfPlayer))) {
                 isRunning = !isRunning;
+                if (!grille.isFull()) {
+                    System.out.println(grille.toString() + "\nJoueur " + getPlayerLetter(numberOfPlayer) + " a gagné !");
+                } else {
+                    System.out.println(grille.toString() + "\nÉgalité à la BigFlop et AuLit XD PTDR");
+                }
             }
+<<<<<<< HEAD:src/main/java/main/java/puissance4/GameManager.java
             turnNumber++;
         }
      
 
+=======
+            turn++;
+        } 
+        
+>>>>>>> a6874d34f6d52b3044e00e60584860818f904356:src/main/java/puissance4/GameManager.java
     }
 
-    public static void chooseCommunication() {
-
-        System.out.println("\n" + "Welcome in Puissance 4 - Multiplayer," + textColor.ANSI_YELLOW +"  make a choice : "+textColor.ANSI_RESET);       
-        int choice = promptForInt(textColor.ANSI_YELLOW+"1"+textColor.ANSI_RESET +" - Local\n"+textColor.ANSI_YELLOW+"2"+textColor.ANSI_RESET +" - Reseau");
+    public void chooseCommunication() {
+        int choice = promptForInt("Puissance 4 - Multiplayer \n1 - Local\n2 - Reseau");
         switch (choice) {
             case 1:
                 localPlay();
@@ -75,7 +101,7 @@ public class GameManager {
         }
     }
 
-    public static void chooseTypeOfCommunication() {
+    public void chooseTypeOfCommunication() {
         int choice = promptForInt("Choississez le type de connection :\n1 - Hôte de partie\n2 - Rejoindre une partie");
         switch (choice) {
             case 1:
@@ -95,14 +121,46 @@ public class GameManager {
      * 
      * @return Number of player choosen
      */
-    public static void choosePlayerNumber() {
-        numberOfPlayer = promptForInt("Veuillez entrer le nombre de joueurs ("+textColor.ANSI_YELLOW +"2"+textColor.ANSI_RESET+" ou "+textColor.ANSI_YELLOW +"3"+textColor.ANSI_RESET+")");
-        if (numberOfPlayer != 2 && numberOfPlayer != 3) {
+    public static int choosePlayerNumber() {
+        int entryOfPlayer = promptForInt("Veuillez entrer le nombre de joueurs (2 ou 3)");
+        if (entryOfPlayer != 2 && entryOfPlayer != 3) {
             System.err.println("Please input a valid number");
             choosePlayerNumber();
         }
+        return entryOfPlayer;
     }
 
-    // TODO : La Liaison entre les joueurs en réseau
+    /**
+     * Ask the current player which column he choose
+     * 
+     * @param turn
+     * @return a Letter corresponding to the column choosen
+     */
+    static public String chooseColumn(Grid grille, int numberOfPlayer) {
+        String choice = GameManager
+                .promptForString("Joueur " + getPlayerLetter(numberOfPlayer) + " choisissez une colonne :\n" + grille.toString());
+        if ((ALPHABET_MINUSCULE.substring(0, grille.columnNumber).contains(choice)
+                || ALPHABET_MAJUSCULE.substring(0, grille.columnNumber).contains(choice))
+                && choice.length() > 0) {
+            return choice;
+        } else {
+            System.err.println("Choisissez un emplacement valide (avec la lettre correspondante) ");
+            return chooseColumn(grille, numberOfPlayer);
+        }
+    }
 
+    /**
+     * Méthode qui donne la lettre que joue un joueur en fonction du tour de jeu
+     * 
+     * @param turn
+     * @return a Letter corresponding to the player
+     */
+    public static String getPlayerLetter(int numberOfPlayer) {
+        return LISTE_DE_JOUEUR[turn % numberOfPlayer];
+    }
+
+    public static void JouerLigne(Grid Grid,String player, String indexString ) {
+        int index = "abcdefghijklm".indexOf(indexString);
+        Grid.content.get(index).fill(player);
+    }
 }
