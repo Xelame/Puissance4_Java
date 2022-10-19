@@ -1,6 +1,6 @@
 package puissance4;
 
-
+/* 
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -17,13 +17,13 @@ import puissance4.Grille;
 
 /**
  * Unit test for simple App.
- */
+
 public class AppTest 
 {
     /**
      * Conditions de victoire dans plusieurs configurations
      * @throws IOException
-     */
+    
 
 
     @Test
@@ -41,7 +41,7 @@ public class AppTest
                 Field colonneWith4Jetons =  Colonne.getDeclaredField("colonneWith4jetons");
                 numberOfPlayer.set(null, 2);
                 contenu.setAccessible(true); // contenu est deja public donc pas nécessaire mais au cas où :)
-                ArrayList<Colonne> GridShouldReturnTrue = new ArrayList<>(Arrays.asList(colonneEmpty, colonneEmpty, colonneWith4Jetons, colonneEmpty, colonneEmpty, colonneEmpty));
+                ArrayList<Colonne> GridShouldReturnTrue = new ArrayList<Colonne>(colonneEmpty, colonneEmpty, colonneWith4Jetons, colonneEmpty, colonneEmpty, colonneEmpty);
                 columnWin.setAccessible(true);
                 Grille obj = Grille.getInstance();
                 contenu.set(obj,GridShouldReturnTrue);
@@ -65,3 +65,4 @@ public class AppTest
     //Conditions de visctoire en cas d'égalité
 
 }
+ */
