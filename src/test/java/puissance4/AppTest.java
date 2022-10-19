@@ -31,27 +31,24 @@ public class AppTest
     {
         Class<Grille> GridClass = Grille.class;
         Class<GameManager> Game = GameManager.class;
+        Class<Colonne> Colonne = Colonne.class;
         try {
             Method columnWin = GridClass.getDeclaredMethod("columnWin", String.class);
             try {
                 Field contenu = GridClass.getDeclaredField("contenu");
                 Field numberOfPlayer = Game.getDeclaredField("numberOfPlayer");
+                Field colonneEmpty = Colonne.getDeclaredField("colonneEmpty");
+                Field colonneWith4Jetons =  Colonne.getDeclaredField("colonneWith4jetons");
                 numberOfPlayer.set(null, 2);
                 contenu.setAccessible(true); // contenu est deja public donc pas nécessaire mais au cas où :)
-                ArrayList<String> Line1 = new ArrayList<>(Arrays.asList("X", " ", " ", " ", " ", " "));
-                ArrayList<String> Line2 = new ArrayList<>(Arrays.asList("X", " ", " ", " ", " ", " "));
-                ArrayList<String> Line3 = new ArrayList<>(Arrays.asList("X", " ", " ", " ", " ", " "));
-                ArrayList<String> Line4 = new ArrayList<>(Arrays.asList("X", " ", " ", " ", " ", " "));
-                ArrayList<String> Line5 = new ArrayList<>(Arrays.asList("X", " ", " ", " ", " ", " "));
-                ArrayList<String> Line6 = new ArrayList<>(Arrays.asList("X", "X", "X", "X", " ", " "));
-                ArrayList<ArrayList<String>> GridShouldReturnTrue = new ArrayList<>(Arrays.asList(Line1, Line2, Line3, Line4, Line5, Line6));
+                ArrayList<Colonne> GridShouldReturnTrue = new ArrayList<>(Arrays.asList(colonneEmpty, colonneEmpty, colonneWith4Jetons, colonneEmpty, colonneEmpty, colonneEmpty));
                 columnWin.setAccessible(true);
                 Grille obj = Grille.getInstance();
                 contenu.set(obj,GridShouldReturnTrue);
-                System.out.println(columnWin.invoke("obj", null));
+                //System.out.println(columnWin.invoke(null,"X"));
                 try {assertEquals("This method should return true if there's four same symbols in a same line", true, columnWin.invoke(obj,"X"));}
-                catch (Exception e){
-                    fail("erorr assert equals");
+                catch (InvocationTargetException e){
+                    fail(e.getTargetException().toString());
                 }
             }
             catch(Exception e){
