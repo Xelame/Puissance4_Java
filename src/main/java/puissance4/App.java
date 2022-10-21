@@ -21,7 +21,7 @@ public class App {
             return br.readLine();
         } catch (IOException e) {
             System.err.println("Something went wrong : " + e.getMessage());
-            System.err.println("Please try again.");
+            System.err.println(textColor.ANSI_RED+"Please try again."+textColor.RESET);
             return promptForString(prompt);
         }
     }
@@ -48,14 +48,14 @@ public class App {
                 chooseTypeOfCommunication();
                 break;
             default:
-                System.out.println("Veuillez choisir une entrée valide :)");
+                System.out.println(textColor.ANSI_RED+"Veuillez choisir une entrée valide :)"+textColor.RESET );
                 chooseCommunication();
                 break;
         }
     }
 
     private static void chooseTypeOfCommunication() {
-        int choice = App.promptForInt("Choississez le type de connection :\n1 - Hôte de partie\n2 - Rejoindre une partie");
+        int choice = App.promptForInt(textColor.ANSI_YELLOW+ "Choississez le type de connection :\n1 - Hôte de partie\n2 - Rejoindre une partie"+textColor.RESET );
         switch (choice) {
             case 1:
                 new OnlinePlay();

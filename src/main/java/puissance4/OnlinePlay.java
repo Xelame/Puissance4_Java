@@ -18,7 +18,7 @@ public class OnlinePlay {
     /**
      * La liste de lettre pour les possibles joueurs
      */
-    private final String[] LISTE_DE_JOUEUR = { "O", "X", "V" };
+    private final String[] LISTE_DE_JOUEUR = { textColor.ANSI_CYAN+"O"+textColor.RESET,textColor.ANSI_PURPLE+ "X"+textColor.RESET,textColor. ANSI_GREEN+ "V"+textColor.RESET };
 
     private final int NOMBRE_DE_JOUEUR;
 

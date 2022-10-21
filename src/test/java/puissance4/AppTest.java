@@ -29,14 +29,14 @@ public class AppTest
     @Test
     public void LineWinShouldreturnCorrectResult()
     {
-        /*Class<Grille> GridClass = Grille.class;
-        Class<GameManager> Game = GameManager.class;
+        Class<Grille> GridClass = Grille.class;
+        Class<App> Game = App.class;
         try {
             Method columnWin = GridClass.getDeclaredMethod("columnWin", String.class);
             try {
                 Field contenu = GridClass.getDeclaredField("contenu");
-                Field numberOfPlayer = Game.getDeclaredField("numberOfPlayer");
-                numberOfPlayer.set(null, 2);
+                //Field numberOfPlayer = Game.getDeclaredField("numberOfPlayer");
+                int numberOfPlayer = 2;
                 contenu.setAccessible(true); // contenu est deja public donc pas nécessaire mais au cas où :)
                 ArrayList<String> Line1 = new ArrayList<>(Arrays.asList("X", " ", " ", " ", " ", " "));
                 ArrayList<String> Line2 = new ArrayList<>(Arrays.asList("X", " ", " ", " ", " ", " "));
@@ -46,7 +46,7 @@ public class AppTest
                 ArrayList<String> Line6 = new ArrayList<>(Arrays.asList("X", "X", "X", "X", " ", " "));
                 ArrayList<ArrayList<String>> GridShouldReturnTrue = new ArrayList<>(Arrays.asList(Line1, Line2, Line3, Line4, Line5, Line6));
                 columnWin.setAccessible(true);
-                Grille obj = Grille.getInstance();
+                Grille obj = Grille.getInstance(numberOfPlayer);
                 contenu.set(obj,GridShouldReturnTrue);
                 System.out.println(columnWin.invoke("obj", null));
                 try {assertEquals("This method should return true if there's four same symbols in a same line", true, columnWin.invoke(obj,"X"));}
@@ -61,7 +61,7 @@ public class AppTest
         }
         catch(Exception e){
             fail("error");
-        }*/
+        }
         
     }
 
