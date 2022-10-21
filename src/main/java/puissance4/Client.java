@@ -7,42 +7,72 @@ import java.nio.channels.SocketChannel;
 
 public class Client {
 
-    public SocketChannel clientSocket;
-    private int numberOfPlayer;
+    private SocketChannel clientSocket;
+    private int NOMBRE_DE_JOUEUR ;
+    private Grille grille;
 
     public Client() {
         try {
-            clientSocket = SocketChannel.open();
+            // Phase de connexion
             connectToServer();
-            numberOfPlayer = Integer.parseInt(String.valueOf(listen(clientSocket).charAt(0)));
-            Grid grille = new Grid(numberOfPlayer);
 
-            Boolean isRunning = true;
-            while (isRunning) {
-                String turncall = listen(clientSocket);
-                if (turncall.split(" ")[0].equals("Your")) {
-                    if (grille.isRunning(turncall.split(" ")[2])) {
-                        isRunning = !isRunning;
-                    }
-                    System.out.println(turncall);
-                    write("Turn " + turncall.split(" ")[2] + " " + chooseColumn(grille, numberOfPlayer), clientSocket);
-                }
-                String[] adversaire = listen(clientSocket).split(" ");
-                
-                GameManager.JouerLigne(grille, adversaire[1], adversaire[2]);
-                grille.toString();
-            }
+            // Etape 1 - 1ere reception : taille de la grille
+            
+            // Message de type : "Players X" où X est le nombre a récupéré ^^
+            String aled = listen(clientSocket);
+            System.out.println(aled);
+            NOMBRE_DE_JOUEUR = Integer.parseInt(aled.split(" ")[1].trim());
+
+            grille = Grille.getInstance(NOMBRE_DE_JOUEUR);
+
+            System.out.println(grille.toString());
+
+            run();
         } catch (IOException e) {
-            System.err.println(e.toString());
+            System.err.println("Connexion perdu avec le serveur");
+        }
+    }
+
+    private void run() throws IOException {
+        Boolean isRunning = true;
+        while (isRunning) {
+
+            // Message de type : "Your turn X" où X est la lettre du joueur ^^
+            String[] turncall = listen(clientSocket).split(" ");
+            System.out.println(String.join(" ", turncall));
+            if (turncall[0].equals("Your")) {
+                String character = String.valueOf(turncall[2]);
+                // Réponse de type : Turn X 0 où X est le joueur et 0 l'index
+                write("Turn " + character + " " + grille.chooseColumn(character), clientSocket);
+            }
+            if (turncall[0].equals("Turn")) {
+                System.out.println("Hello");
+                grille.fillColumn(Integer.valueOf(turncall[2].trim()), String.valueOf(turncall[1].trim()));
+                if (grille.isEnd(String.valueOf(turncall[1].trim()))) {
+                    isRunning = !isRunning;
+                    if (!grille.isFull()) {
+                        System.out
+                                .println(grille.toString() + "\nJoueur " + String.valueOf(turncall[1].trim()) + " a gagné !");
+                    } else {
+                        System.out.println(grille.toString() + "\nÉgalité à la BigFlop et AuLit XD PTDR");
+                    }
+                }
+            }
         }
     }
 
     public void connectToServer() {
-        String choice = GameManager.promptForString("Entrer l'IP du serveur voulu :");
+        String choice = App.promptForString("Entrer l'IP du serveur voulu :");
         try {
+            clientSocket = SocketChannel.open();
             clientSocket.connect(new InetSocketAddress(choice, 4004));
             System.out.println("Vous êtes connectée !");
         } catch (IOException e) {
+            try {
+                clientSocket.close();
+            } catch (IOException e1) {
+                System.err.println("Le Socket du client n'a pas pu être fermé");
+            }
             System.out.println("L'adresse entrée est invalide");
             connectToServer();
         }
@@ -63,19 +93,6 @@ public class Client {
         ByteBuffer bytes = ByteBuffer.wrap(message.getBytes());
         while (bytes.hasRemaining()) {
             socket.write(bytes);
-        }
-    }
-
-    public String chooseColumn(Grid grille, int numberOfPlayer) {
-        String choice = GameManager
-                .promptForString(grille.toString());
-        if ((GameManager.ALPHABET_MINUSCULE.substring(0, grille.columnNumber).contains(choice)
-                || GameManager.ALPHABET_MAJUSCULE.substring(0, grille.columnNumber).contains(choice))
-                && choice.length() > 0) {
-            return choice;
-        } else {
-            System.err.println("Choisissez un emplacement valide (avec la lettre correspondante) ");
-            return chooseColumn(grille, numberOfPlayer);
         }
     }
 }
