@@ -15,11 +15,12 @@ import java.nio.channels.SocketChannel;
 public class Client {
   
     
-    public static void main(String[] args){
+    //public static void main(String[] args){
 
-    private SocketChannel clientSocket;
-    private int NOMBRE_DE_JOUEUR ;
-    private Grille grille;
+        private SocketChannel clientSocket;
+        private int NOMBRE_DE_JOUEUR ;
+        private Grille grille;
+    
 
     public Client() {
         try {
@@ -29,6 +30,7 @@ public class Client {
             // Etape 1 - 1ere reception : taille de la grille
             
             // Message de type : "Players X" où X est le nombre a récupéré ^^
+            
             String aled = listen(clientSocket);
             System.out.println(aled);
             NOMBRE_DE_JOUEUR = Integer.parseInt(aled.split(" ")[1].trim());
@@ -101,6 +103,24 @@ public class Client {
             System.err.println("Something went wrong : " + e.getMessage());
             System.err.println("Please retry : ");
             return promptForString();
+        }
+    }
+
+    static public String listen(SocketChannel clientSocket) throws IOException {
+        ByteBuffer bytes = ByteBuffer.allocate(1024);
+        int bytesRead = clientSocket.read(bytes);
+        if (bytesRead <= 0) {
+            clientSocket.close();
+            return "";
+        }
+        String message = new String(bytes.array());
+        return message;
+    }
+
+    public void write(String message, SocketChannel socket) throws IOException {
+        ByteBuffer bytes = ByteBuffer.wrap(message.getBytes());
+        while (bytes.hasRemaining()) {
+            socket.write(bytes);
         }
     }
 }

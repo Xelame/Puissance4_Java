@@ -1,5 +1,9 @@
 package puissance4;
 
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.channels.SocketChannel;
+
 public class LocalPlay {
 
     /**
@@ -63,4 +67,6 @@ public class LocalPlay {
         }
         return players;
     }
+
+    
 }
