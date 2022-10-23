@@ -11,9 +11,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
-import java.util.concurrent.TimeoutException;
 
-public class OnlinePlay {
+public class OnlinePlay implements Runnable {
 
     /**
      * La liste de lettre pour les possibles joueurs
@@ -33,6 +32,10 @@ public class OnlinePlay {
     public OnlinePlay() {
         NOMBRE_DE_JOUEUR = choosePlayerNumber();
         currentTurn = RandomBegin();
+    }
+
+    @Override
+    public void run() {
         getMyIpAddress();
         launch();
     }
@@ -54,7 +57,7 @@ public class OnlinePlay {
         try {
             serverSocket = ServerSocketChannel.open();
             serverSocket.bind(new InetSocketAddress(4004));
-            System.out.println("En attente de joueur ...");
+
             connection(serverSocket);
         } catch (IOException e) {
             System.err.println("Problème durant les connexions");
@@ -85,34 +88,25 @@ public class OnlinePlay {
 
             try {
                 String[] response = listen(currentPlayer).split(" ");
-                grille.fillColumn(Integer.valueOf(response[2].trim()), String.valueOf(response[1].trim()));
                 broadcast(String.join(" ", response));
-                System.out.println(grille.toString());
 
                 if (grille.isEnd(getPlayerLetter())) {
                     isRunning = !isRunning;
-                    if (!grille.isFull()) {
-                        System.out.println("\nJoueur " + getPlayerLetter() + " a gagné !");
-                    } else {
-                        System.out.println("\nÉgalité à la BigFlop et AuLit XD PTDR");
-                    }
                 }
-                
+
                 currentTurn++;
             } catch (IOException e) {
-                System.out.println("Protocole incorrect");
+                System.err.println("Protocole incorrect");
             }
-
         }
-
     }
 
     private void connection(ServerSocketChannel serverSocket) throws IOException {
         while (connexions.size() < NOMBRE_DE_JOUEUR) {
             SocketChannel clientSocket = serverSocket.accept();
             connexions.add(clientSocket);
-            System.out.println("Un client s'est connecté\nTotal : " + connexions.size() + " / " + NOMBRE_DE_JOUEUR);
             writeToSocket("Players " + Integer.toString(NOMBRE_DE_JOUEUR), clientSocket);
+            broadcast("[SERVEUR] Un client s'est connecté\n[SERVEUR] Total : " + connexions.size() + " / " + NOMBRE_DE_JOUEUR);
         }
     }
 
@@ -180,5 +174,6 @@ public class OnlinePlay {
         }
         return players;
     }
+
 
 }

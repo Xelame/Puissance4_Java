@@ -58,10 +58,13 @@ public class App {
         int choice = App.promptForInt("Choississez le type de connection :\n1 - Hôte de partie\n2 - Rejoindre une partie");
         switch (choice) {
             case 1:
-                new OnlinePlay();
+                Thread serveur = new Thread(new OnlinePlay());
+                serveur.start();
+                new Client(true);
+                serveur.interrupt();
                 break;
             case 2:
-                new Client();
+                new Client(false);
                 break;
             default:
                 chooseCommunication();

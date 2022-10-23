@@ -163,10 +163,9 @@ public class Grille {
      * @return
      */
     private Boolean diagonalWin(String playerLetter, Boolean inversed) {
-        for (int colonne = inversed ? 3 : 0; colonne < (inversed ? NOMBRE_DE_COLONNE
+        for (int colonne = (inversed ? 3 : 0); colonne < (inversed ? NOMBRE_DE_COLONNE
                 : NOMBRE_DE_COLONNE - 3); colonne++) {
-            for (int ligne = inversed ? 3 : 0; ligne < (inversed ? NOMBRE_DE_LIGNE
-                    : NOMBRE_DE_LIGNE - 3); ligne++) {
+            for (int ligne = 0; ligne < NOMBRE_DE_LIGNE - 3; ligne++) {
                 if (checkdiagonal(colonne, ligne, playerLetter, inversed)) {
                     return true;
                 }
@@ -263,5 +262,9 @@ public class Grille {
                 || diagonalWin(playerLetter, false)
                 || lineWin(playerLetter)
                 || columnWin(playerLetter);
+    }
+
+    public Colonne getColumn(int indexColonne) {
+        return contenu.get(indexColonne);
     }
 }

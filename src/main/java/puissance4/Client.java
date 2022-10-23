@@ -11,17 +11,15 @@ public class Client {
     private int NOMBRE_DE_JOUEUR ;
     private Grille grille;
 
-    public Client() {
+    public Client(Boolean isLocal) {
         try {
             // Phase de connexion
-            connectToServer();
+            connectToServer(isLocal);
 
             // Etape 1 - 1ere reception : taille de la grille
             
             // Message de type : "Players X" où X est le nombre a récupéré ^^
-            String aled = listen(clientSocket);
-            System.out.println(aled);
-            NOMBRE_DE_JOUEUR = Integer.parseInt(aled.split(" ")[1].trim());
+            NOMBRE_DE_JOUEUR = Integer.parseInt(listen(clientSocket).split(" ")[1].trim());
 
             grille = Grille.getInstance(NOMBRE_DE_JOUEUR);
 
@@ -39,14 +37,18 @@ public class Client {
 
             // Message de type : "Your turn X" où X est la lettre du joueur ^^
             String[] turncall = listen(clientSocket).split(" ");
-            System.out.println(String.join(" ", turncall));
             if (turncall[0].equals("Your")) {
                 String character = String.valueOf(turncall[2]);
+                int leChiffreQueNousDonneLeJoueur = grille.chooseColumn(character);
+
+                while (grille.getColumn(leChiffreQueNousDonneLeJoueur).isFull()) {
+                    System.out.println("La colonne est deja pleine !");
+                    leChiffreQueNousDonneLeJoueur = grille.chooseColumn(character);
+                }
+                
                 // Réponse de type : Turn X 0 où X est le joueur et 0 l'index
-                write("Turn " + character + " " + grille.chooseColumn(character), clientSocket);
-            }
-            if (turncall[0].equals("Turn")) {
-                System.out.println("Hello");
+                write("Turn " + character + " " + leChiffreQueNousDonneLeJoueur, clientSocket);
+            } else if (turncall[0].equals("Turn")) {
                 grille.fillColumn(Integer.valueOf(turncall[2].trim()), String.valueOf(turncall[1].trim()));
                 if (grille.isEnd(String.valueOf(turncall[1].trim()))) {
                     isRunning = !isRunning;
@@ -57,12 +59,20 @@ public class Client {
                         System.out.println(grille.toString() + "\nÉgalité à la BigFlop et AuLit XD PTDR");
                     }
                 }
+                System.out.println(grille.toString());
+            } else {
+                System.out.println(String.join(" ", turncall));
             }
         }
     }
 
-    public void connectToServer() {
-        String choice = App.promptForString("Entrer l'IP du serveur voulu :");
+    public void connectToServer(Boolean isLocal) {
+        String choice;
+        if (isLocal) {
+            choice = "localhost";
+        } else {
+            choice = App.promptForString("Entrer l'IP du serveur voulu :");
+        }
         try {
             clientSocket = SocketChannel.open();
             clientSocket.connect(new InetSocketAddress(choice, 4004));
@@ -74,7 +84,7 @@ public class Client {
                 System.err.println("Le Socket du client n'a pas pu être fermé");
             }
             System.out.println("L'adresse entrée est invalide");
-            connectToServer();
+            connectToServer(isLocal);
         }
     }
 
