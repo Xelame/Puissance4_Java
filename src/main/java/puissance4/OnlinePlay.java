@@ -1,4 +1,4 @@
-package puissance4;
+package main.java.puissance4;
 
 import java.io.IOException;
 import java.net.InetAddress;

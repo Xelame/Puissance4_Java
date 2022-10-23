@@ -1,7 +1,7 @@
-package puissance4;
-
+package test.java.puissance4;
 
 import java.io.IOException;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -12,57 +12,103 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import org.junit.Test;
+import org.junit.internal.runners.statements.FailOnTimeout;
 
-import puissance4.Grille;
+import main.java.puissance4.Grille;
+import main.java.puissance4.App;
+import main.java.puissance4.Colonne;
+
 
 /**
  * Unit test for simple App.
  */
 public class AppTest 
 {
-    /**
-     * Conditions de victoire dans plusieurs configurations
-     * @throws IOException
-     */
+      
+   
 
+   
 
     @Test
     public void LineWinShouldreturnCorrectResult()
     {
+        
         Class<Grille> GridClass = Grille.class;
         Class<App> Game = App.class;
+        //Class<Colonne> colonne = Colonne.class;
         try {
-            Method columnWin = GridClass.getDeclaredMethod("columnWin", String.class);
+            //récupération des variables et méthodes
+            int numberOfPlayer = 2;
+              //mise en place du constructeur grille
+              Constructor<Grille> constructor = GridClass.getDeclaredConstructor(int.class);
+      
+              constructor.setAccessible(true);
+               //création de l'instance grille
+               constructor.newInstance(numberOfPlayer);
+  
+
+        
+            Method columnWin = GridClass.getDeclaredMethod("columnWin",String.class);
+            Field contenu = GridClass.getDeclaredField("contenu");
+            Field instance = GridClass.getDeclaredField("instance");
+            Method fillColumn =  GridClass.getDeclaredMethod("fillColumn", int.class,String.class);     
+            Method isFull = GridClass.getDeclaredMethod("isFull");     
+            Method getInstance = GridClass.getDeclaredMethod("getInstance", int.class);
+            
+
+            getInstance.invoke(constructor, numberOfPlayer);
+              
+          
+             //création d'un array similaire un contenu qui va être rempli en fonction de nos choix
+             ArrayList<String> Line = new ArrayList<>(Arrays.asList("X", "X", "X", "X", "X", "X"));
+             ArrayList<String> LineVoid = new ArrayList<>(Arrays.asList(" ", " ", " ", " ", " ", " "));
+             ArrayList<ArrayList<String>> GridShouldReturnTrue = new ArrayList<>();
+
+             GridShouldReturnTrue.add(Line);
+             GridShouldReturnTrue.add(Line);
+             GridShouldReturnTrue.add(Line);
+             GridShouldReturnTrue.add(Line);
+             GridShouldReturnTrue.add(Line);
+             GridShouldReturnTrue.add(Line);
+             GridShouldReturnTrue.add(Line);
+             GridShouldReturnTrue.add(Line);               
+
+            try {                  
+               
+            //ajout de notre array a contenu
+            contenu.setAccessible(true);
+            contenu.set(getInstance.invoke(null, numberOfPlayer),GridShouldReturnTrue);
+            
+                      
+            
+            }
+            catch (IllegalArgumentException e){
+                fail("error lors de l'ajout de l'array" +e);
+            }   
+
+                
+
             try {
-                Field contenu = GridClass.getDeclaredField("contenu");
-                //Field numberOfPlayer = Game.getDeclaredField("numberOfPlayer");
-                int numberOfPlayer = 2;
-                contenu.setAccessible(true); // contenu est deja public donc pas nécessaire mais au cas où :)
-                ArrayList<String> Line1 = new ArrayList<>(Arrays.asList("X", " ", " ", " ", " ", " "));
-                ArrayList<String> Line2 = new ArrayList<>(Arrays.asList("X", " ", " ", " ", " ", " "));
-                ArrayList<String> Line3 = new ArrayList<>(Arrays.asList("X", " ", " ", " ", " ", " "));
-                ArrayList<String> Line4 = new ArrayList<>(Arrays.asList("X", " ", " ", " ", " ", " "));
-                ArrayList<String> Line5 = new ArrayList<>(Arrays.asList("X", " ", " ", " ", " ", " "));
-                ArrayList<String> Line6 = new ArrayList<>(Arrays.asList("X", "X", "X", "X", " ", " "));
-                ArrayList<ArrayList<String>> GridShouldReturnTrue = new ArrayList<>(Arrays.asList(Line1, Line2, Line3, Line4, Line5, Line6));
-                columnWin.setAccessible(true);
-                Grille obj = Grille.getInstance(numberOfPlayer);
-                contenu.set(obj,GridShouldReturnTrue);
-                System.out.println(columnWin.invoke("obj", null));
-                try {assertEquals("This method should return true if there's four same symbols in a same line", true, columnWin.invoke(obj,"X"));}
-                catch (Exception e){
-                    fail("erorr assert equals");
+                Boolean value = (Boolean) isFull.invoke(constructor);
+                
+                try {
+                    assertEquals("This method should return true if there's four same symbols in a same line ", true,value );
+                } catch (Exception e) {
+                    fail("error assert equals " );
                 }
+            
             }
-            catch(Exception e){
-                fail("error");
+            catch (Exception e){
+                fail("error bool ");
             }
+         
 
         }
         catch(Exception e){
             fail("error");
         }
         
+
     }
 
     //Conditions de visctoire en cas d'égalité
