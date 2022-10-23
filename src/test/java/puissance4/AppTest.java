@@ -1,7 +1,5 @@
-package test.java.puissance4;
+package puissance4;
 
-import java.io.IOException;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -12,20 +10,21 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import org.junit.Test;
-import org.junit.internal.runners.statements.FailOnTimeout;
 
-import main.java.puissance4.Grille;
-import main.java.puissance4.App;
-import main.java.puissance4.Colonne;
 
 
 /**
  * Unit test for simple App.
- */
+**/
+
 public class AppTest 
 {
-   
-    //on test si une colonne de 4 pions est faite par un joueur
+    /**
+     * Conditions de victoire dans plusieurs configurations
+     * @throws IOException
+    **/
+
+
     @Test
     public void ColumnWinShouldreturnCorrectResult()
     {
@@ -36,17 +35,17 @@ public class AppTest
             try {
                 Field contenu = GridClass.getDeclaredField("contenu");
                 Field body =  Col.getDeclaredField("body");
-                contenu.setAccessible(true); // contenu est deja public donc pas nécessaire mais au cas où :)
+                contenu.setAccessible(true); // contenu est deja public donc pas necessaire mais au cas où :)
                 ArrayList<Colonne> GridShouldReturnTrue;
                 GridShouldReturnTrue = new ArrayList<>();
-                GridShouldReturnTrue.add(new Colonne("null"));
-                GridShouldReturnTrue.add(new Colonne("null"));
-                GridShouldReturnTrue.add(new Colonne("null"));
-                GridShouldReturnTrue.add(new Colonne("withX"));  // Tableau qui doit retourner True car X gagne
-                GridShouldReturnTrue.add(new Colonne("null"));
-                GridShouldReturnTrue.add(new Colonne("null"));
-                GridShouldReturnTrue.add(new Colonne("null"));
-                GridShouldReturnTrue.add(new Colonne("null"));
+                GridShouldReturnTrue.add(new Colonne(6, new ArrayList<>(Arrays.asList(" ", " ", " ", " ", " ", " "))));
+                GridShouldReturnTrue.add(new Colonne(6, new ArrayList<>(Arrays.asList(" ", " ", " ", " ", " ", " "))));
+                GridShouldReturnTrue.add(new Colonne(6, new ArrayList<>(Arrays.asList(" ", " ", " ", " ", " ", " "))));
+                GridShouldReturnTrue.add(new Colonne(6, new ArrayList<>(Arrays.asList("X", "X", "X", "X", " ", " "))));  // Tableau qui doit retourner True car X gagne
+                GridShouldReturnTrue.add(new Colonne(6, new ArrayList<>(Arrays.asList(" ", " ", " ", " ", " ", " "))));
+                GridShouldReturnTrue.add(new Colonne(6, new ArrayList<>(Arrays.asList(" ", " ", " ", " ", " ", " "))));
+                GridShouldReturnTrue.add(new Colonne(6, new ArrayList<>(Arrays.asList(" ", " ", " ", " ", " ", " "))));
+                GridShouldReturnTrue.add(new Colonne(6, new ArrayList<>(Arrays.asList(" ", " ", " ", " ", " ", " "))));
                 columnWin.setAccessible(true);
                 body.setAccessible(true);
                 Grille obj = Grille.getInstance(2);
@@ -62,7 +61,7 @@ public class AppTest
 
         }
         catch(Exception e){
-            fail("Methode ColumnWin non trouvée");
+            fail("Methode ColumnWin non trouvee");
         }
         
     }
@@ -78,17 +77,17 @@ public class AppTest
             try {
                 Field contenu = GridClass.getDeclaredField("contenu");
                 Field body =  Col.getDeclaredField("body");
-                contenu.setAccessible(true); // contenu est deja public donc pas nécessaire mais au cas où :)
+                contenu.setAccessible(true); // contenu est deja public donc pas necessaire mais au cas où :)
                 ArrayList<Colonne> GridShouldReturnTrue;
                 GridShouldReturnTrue = new ArrayList<>();
-                GridShouldReturnTrue.add(new Colonne("null"));
-                GridShouldReturnTrue.add(new Colonne("null"));
-                GridShouldReturnTrue.add(new Colonne("null"));
-                GridShouldReturnTrue.add(new Colonne("withX"));  // Tableau qui doit retourner True car X gagne
-                GridShouldReturnTrue.add(new Colonne("withX"));
-                GridShouldReturnTrue.add(new Colonne("withX"));
-                GridShouldReturnTrue.add(new Colonne("withX"));
-                GridShouldReturnTrue.add(new Colonne("null"));
+                GridShouldReturnTrue.add(new Colonne(6, new ArrayList<>(Arrays.asList(" ", " ", " ", " ", " ", " "))));
+                GridShouldReturnTrue.add(new Colonne(6, new ArrayList<>(Arrays.asList(" ", " ", " ", " ", " ", " "))));
+                GridShouldReturnTrue.add(new Colonne(6, new ArrayList<>(Arrays.asList(" ", " ", " ", " ", " ", " "))));
+                GridShouldReturnTrue.add(new Colonne(6, new ArrayList<>(Arrays.asList("X", " ", " ", " ", " ", " "))));;  // Tableau qui doit retourner True car X gagne
+                GridShouldReturnTrue.add(new Colonne(6, new ArrayList<>(Arrays.asList("X", " ", " ", " ", " ", " "))));
+                GridShouldReturnTrue.add(new Colonne(6, new ArrayList<>(Arrays.asList("X", " ", " ", " ", " ", " "))));
+                GridShouldReturnTrue.add(new Colonne(6, new ArrayList<>(Arrays.asList("X", " ", " ", " ", " ", " "))));
+                GridShouldReturnTrue.add(new Colonne(6, new ArrayList<>(Arrays.asList(" ", " ", " ", " ", " ", " "))));
                 lineWin.setAccessible(true);
                 body.setAccessible(true);
                 Grille obj = Grille.getInstance(2);
@@ -104,12 +103,12 @@ public class AppTest
 
         }
         catch(Exception e){
-            fail("Methode lineWin non trouvée");
+            fail("Methode lineWin non trouvee");
         }
         
     }
 
-    //on test si la grille est complètement rempli (cas d'égalité)
+    //on test si la grille est complètement rempli (cas d'egalite)
     @Test
     public void isFullShouldreturnCorrectResult()
     {
@@ -120,17 +119,17 @@ public class AppTest
             try {
                 Field contenu = GridClass.getDeclaredField("contenu");
                 Field body =  Col.getDeclaredField("body");
-                contenu.setAccessible(true); // contenu est deja public donc pas nécessaire mais au cas où :)
+                contenu.setAccessible(true); // contenu est deja public donc pas necessaire mais au cas où :)
                 ArrayList<Colonne> GridShouldReturnTrue;
                 GridShouldReturnTrue = new ArrayList<>();
-                GridShouldReturnTrue.add(new Colonne("withX"));
-                GridShouldReturnTrue.add(new Colonne("withX"));
-                GridShouldReturnTrue.add(new Colonne("withX"));
-                GridShouldReturnTrue.add(new Colonne("withX"));  // Tableau qui doit retourner True car X gagne
-                GridShouldReturnTrue.add(new Colonne("withX"));
-                GridShouldReturnTrue.add(new Colonne("withX"));
-                GridShouldReturnTrue.add(new Colonne("withX"));
-                GridShouldReturnTrue.add(new Colonne("withX"));
+                GridShouldReturnTrue.add(new Colonne(6, new ArrayList<>(Arrays.asList("X", "O", "X", "O", "X", "O"))));
+                GridShouldReturnTrue.add(new Colonne(6, new ArrayList<>(Arrays.asList("O", "X", "O", "X", "O", "X"))));
+                GridShouldReturnTrue.add(new Colonne(6, new ArrayList<>(Arrays.asList("O", "X", "O", "X", "O", "X"))));
+                GridShouldReturnTrue.add(new Colonne(6, new ArrayList<>(Arrays.asList("O", "X", "O", "X", "O", "X"))));  
+                GridShouldReturnTrue.add(new Colonne(6, new ArrayList<>(Arrays.asList("X", "O", "X", "O", "X", "O"))));
+                GridShouldReturnTrue.add(new Colonne(6, new ArrayList<>(Arrays.asList("O", "X", "O", "X", "O", "X"))));
+                GridShouldReturnTrue.add(new Colonne(6, new ArrayList<>(Arrays.asList("O", "X", "O", "X", "O", "X"))));
+                GridShouldReturnTrue.add(new Colonne(6, new ArrayList<>(Arrays.asList("O", "X", "O", "X", "O", "X"))));
                 isFull.setAccessible(true);
                 body.setAccessible(true);
                 Grille obj = Grille.getInstance(2);
@@ -146,8 +145,52 @@ public class AppTest
 
         }
         catch(Exception e){
-            fail("Methode isFull non trouvée");
+            fail("Methode isFull non trouvee");
         }
+
+    }
+
+
+        @Test
+    public void DiagonalWinShouldreturnCorrectResult()
+    {
+        Class<Grille> GridClass = Grille.class;
+        Class<Colonne> Col = Colonne.class;
+        try {
+            Method diagonalWin = GridClass.getDeclaredMethod("diagonalWin", String.class , Boolean.class);
+            try {
+                Field contenu = GridClass.getDeclaredField("contenu");
+                Field body =  Col.getDeclaredField("body");
+                contenu.setAccessible(true); // contenu est deja public donc pas necessaire mais au cas où :)
+                ArrayList<Colonne> GridShouldReturnTrue;
+                GridShouldReturnTrue = new ArrayList<>();
+                GridShouldReturnTrue.add(new Colonne(6, new ArrayList<>(Arrays.asList(" ", " ", " ", " ", " ", " "))));
+                GridShouldReturnTrue.add(new Colonne(6, new ArrayList<>(Arrays.asList(" ", " ", " ", " ", " ", " "))));
+                GridShouldReturnTrue.add(new Colonne(6, new ArrayList<>(Arrays.asList(" ", " ", " ", " ", " ", " "))));
+                GridShouldReturnTrue.add(new Colonne(6, new ArrayList<>(Arrays.asList("X", " ", " ", " ", " ", " "))));  // Tableau qui doit retourner True car X gagne
+                GridShouldReturnTrue.add(new Colonne(6, new ArrayList<>(Arrays.asList(" ", "X", " ", " ", " ", " "))));
+                GridShouldReturnTrue.add(new Colonne(6, new ArrayList<>(Arrays.asList(" ", " ", "X", " ", " ", " "))));
+                GridShouldReturnTrue.add(new Colonne(6, new ArrayList<>(Arrays.asList(" ", " ", " ", "X", " ", " "))));
+                GridShouldReturnTrue.add(new Colonne(6, new ArrayList<>(Arrays.asList(" ", " ", " ", " ", " ", " "))));
+                diagonalWin.setAccessible(true);
+                body.setAccessible(true);
+                Grille obj = Grille.getInstance(2);
+                contenu.set(obj,GridShouldReturnTrue);
+                try {assertEquals("This method should return true if there's four same symbols in a same line", true, diagonalWin.invoke(obj,"X",false));}
+                catch (InvocationTargetException e){
+                    fail(e.getTargetException().toString());
+                }
+            }
+            catch(Exception e){
+                fail("error1");
+            }
+
+        }
+        catch(Exception e){
+            fail("Methode diagonalWin non trouvee");
+        }
+        
+    
         
     }
 
