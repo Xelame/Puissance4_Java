@@ -47,6 +47,6 @@ To install :
 
 ***
 ## 👨‍💻 TEAM
->GUENARD Juliette  https://github.com/julietteGUE16
->FAVENNEC Mélaine https://github.com/MelaineF
->ROLLAND Alexandre https://github.com/Xelame
+>GUENARD Juliette  https://github.com/julietteGUE16<br/>
+>FAVENNEC Mélaine https://github.com/MelaineF<br/>
+>ROLLAND Alexandre https://github.com/Xelame<br/>

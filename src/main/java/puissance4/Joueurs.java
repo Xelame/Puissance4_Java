@@ -1,4 +1,7 @@
 package puissance4;
-public class Joueurs {
-    
+
+public enum Joueurs {
+    J1,
+    J2,
+    J3,
 }
