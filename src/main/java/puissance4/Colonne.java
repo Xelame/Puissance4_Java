@@ -11,6 +11,18 @@ public final class Colonne {
             body.add(" ");
         }
     }
+    public Colonne(String TEST) {
+        body = new ArrayList<>();
+        if(TEST == "withX"){
+            for (int i = 0; i < 6; i++) {
+                body.add("X");
+            }
+        } else {
+            for (int i = 0; i < 6; i++) {
+                body.add(" ");
+            }
+        }
+    }
 
     public Boolean isFull() {
         return body.indexOf(" ") == -1;

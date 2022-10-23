@@ -24,110 +24,131 @@ import main.java.puissance4.Colonne;
  */
 public class AppTest 
 {
-      
    
+    //on test si une colonne de 4 pions est faite par un joueur
+    @Test
+    public void ColumnWinShouldreturnCorrectResult()
+    {
+        Class<Grille> GridClass = Grille.class;
+        Class<Colonne> Col = Colonne.class;
+        try {
+            Method columnWin = GridClass.getDeclaredMethod("columnWin", String.class);
+            try {
+                Field contenu = GridClass.getDeclaredField("contenu");
+                Field body =  Col.getDeclaredField("body");
+                contenu.setAccessible(true); // contenu est deja public donc pas nécessaire mais au cas où :)
+                ArrayList<Colonne> GridShouldReturnTrue;
+                GridShouldReturnTrue = new ArrayList<>();
+                GridShouldReturnTrue.add(new Colonne("null"));
+                GridShouldReturnTrue.add(new Colonne("null"));
+                GridShouldReturnTrue.add(new Colonne("null"));
+                GridShouldReturnTrue.add(new Colonne("withX"));  // Tableau qui doit retourner True car X gagne
+                GridShouldReturnTrue.add(new Colonne("null"));
+                GridShouldReturnTrue.add(new Colonne("null"));
+                GridShouldReturnTrue.add(new Colonne("null"));
+                GridShouldReturnTrue.add(new Colonne("null"));
+                columnWin.setAccessible(true);
+                body.setAccessible(true);
+                Grille obj = Grille.getInstance(2);
+                contenu.set(obj,GridShouldReturnTrue);
+                try {assertEquals("This method should return true if there's four same symbols in a same line", true, columnWin.invoke(obj,"X"));}
+                catch (InvocationTargetException e){
+                    fail(e.getTargetException().toString());
+                }
+            }
+            catch(Exception e){
+                fail("error1");
+            }
 
-   
+        }
+        catch(Exception e){
+            fail("Methode ColumnWin non trouvée");
+        }
+        
+    }
 
+    //on test si une ligne de 4 pions est faite par un joueur
     @Test
     public void LineWinShouldreturnCorrectResult()
     {
-        
         Class<Grille> GridClass = Grille.class;
-        Class<App> Game = App.class;
-        //Class<Colonne> colonne = Colonne.class;
+        Class<Colonne> Col = Colonne.class;
         try {
-            //récupération des variables et méthodes
-            int numberOfPlayer = 2;
-              //mise en place du constructeur grille
-              Grille grid = constructGrid(2);
-  
-
-        
-            Method columnWin = GridClass.getDeclaredMethod("columnWin",String.class);
-            Field contenu = GridClass.getDeclaredField("contenu");
-            Field instance = GridClass.getDeclaredField("instance");
-            Method fillColumn =  GridClass.getDeclaredMethod("fillColumn", int.class,String.class);     
-            Method isFull = GridClass.getDeclaredMethod("isFull");     
-            //on veut justement le remplir qu'avec notre grille ici
-            //Method getInstance = GridClass.getDeclaredMethod("getInstance", int.class);
-            
-
-            
-              
-          
-             //création d'un array similaire un contenu qui va être rempli en fonction de nos choix
-             ArrayList<String> Line = new ArrayList<>(Arrays.asList("X", "X", "X", "X", "X", "X"));
-             ArrayList<String> LineVoid = new ArrayList<>(Arrays.asList(" ", " ", " ", " ", " ", " "));
-             ArrayList<ArrayList<String>> GridShouldReturnTrue = new ArrayList<>();
-
-             GridShouldReturnTrue.add(Line);
-             GridShouldReturnTrue.add(Line);
-             GridShouldReturnTrue.add(Line);
-             GridShouldReturnTrue.add(Line);
-             GridShouldReturnTrue.add(Line);
-             GridShouldReturnTrue.add(Line);
-             GridShouldReturnTrue.add(Line);
-             GridShouldReturnTrue.add(Line);               
-
-            try {                  
-               
-            //ajout de notre array a contenu
-            contenu.setAccessible(true);
-            contenu.set(grid,GridShouldReturnTrue);
-            
-                      
-            
-            }
-            catch (IllegalArgumentException e){
-                fail("error lors de l'ajout de l'array" +e);
-            }   
-
-                
-
+            Method lineWin = GridClass.getDeclaredMethod("lineWin", String.class);
             try {
-                boolean value = (boolean) columnWin.invoke(grid, "X");
-                
-                try {
-                    assertEquals("This method should return true if there's four same symbols in a same line ", true,value );
-                } catch (Exception e) {
-                    fail("error assert equals " );
+                Field contenu = GridClass.getDeclaredField("contenu");
+                Field body =  Col.getDeclaredField("body");
+                contenu.setAccessible(true); // contenu est deja public donc pas nécessaire mais au cas où :)
+                ArrayList<Colonne> GridShouldReturnTrue;
+                GridShouldReturnTrue = new ArrayList<>();
+                GridShouldReturnTrue.add(new Colonne("null"));
+                GridShouldReturnTrue.add(new Colonne("null"));
+                GridShouldReturnTrue.add(new Colonne("null"));
+                GridShouldReturnTrue.add(new Colonne("withX"));  // Tableau qui doit retourner True car X gagne
+                GridShouldReturnTrue.add(new Colonne("withX"));
+                GridShouldReturnTrue.add(new Colonne("withX"));
+                GridShouldReturnTrue.add(new Colonne("withX"));
+                GridShouldReturnTrue.add(new Colonne("null"));
+                lineWin.setAccessible(true);
+                body.setAccessible(true);
+                Grille obj = Grille.getInstance(2);
+                contenu.set(obj,GridShouldReturnTrue);
+                try {assertEquals("This method should return true if there's four same symbols in a same line", true, lineWin.invoke(obj,"X"));}
+                catch (InvocationTargetException e){
+                    fail(e.getTargetException().toString());
                 }
-            
             }
-            catch (Exception e){
-                fail("error bool ");
+            catch(Exception e){
+                fail("error1");
             }
-         
 
         }
         catch(Exception e){
-            fail("error");
+            fail("Methode lineWin non trouvée");
         }
-
-
-
         
-
     }
 
-
-    public static Grille constructGrid(int nbPlayer){
-        Class<Grille> opClass = Grille.class;
+    //on test si la grille est complètement rempli (cas d'égalité)
+    @Test
+    public void isFullShouldreturnCorrectResult()
+    {
+        Class<Grille> GridClass = Grille.class;
+        Class<Colonne> Col = Colonne.class;
         try {
-            Constructor<Grille> constructor = opClass.getDeclaredConstructor(int.class);
-            constructor.setAccessible(true);
-            return constructor.newInstance(nbPlayer);
-        }
-        catch(NoSuchMethodException e){
-            fail("Could not find constructor with correct signature for testing");
+            Method isFull = GridClass.getDeclaredMethod("isFull");
+            try {
+                Field contenu = GridClass.getDeclaredField("contenu");
+                Field body =  Col.getDeclaredField("body");
+                contenu.setAccessible(true); // contenu est deja public donc pas nécessaire mais au cas où :)
+                ArrayList<Colonne> GridShouldReturnTrue;
+                GridShouldReturnTrue = new ArrayList<>();
+                GridShouldReturnTrue.add(new Colonne("withX"));
+                GridShouldReturnTrue.add(new Colonne("withX"));
+                GridShouldReturnTrue.add(new Colonne("withX"));
+                GridShouldReturnTrue.add(new Colonne("withX"));  // Tableau qui doit retourner True car X gagne
+                GridShouldReturnTrue.add(new Colonne("withX"));
+                GridShouldReturnTrue.add(new Colonne("withX"));
+                GridShouldReturnTrue.add(new Colonne("withX"));
+                GridShouldReturnTrue.add(new Colonne("withX"));
+                isFull.setAccessible(true);
+                body.setAccessible(true);
+                Grille obj = Grille.getInstance(2);
+                contenu.set(obj,GridShouldReturnTrue);
+                try {assertEquals("This method should return true if there's four same symbols in a same line", true, isFull.invoke(obj));}
+                catch (InvocationTargetException e){
+                    fail(e.getTargetException().toString());
+                }
+            }
+            catch(Exception e){
+                fail("error1");
+            }
+
         }
         catch(Exception e){
-            fail("Could not construct a new Operation instance. Unknown exception uncountered");
+            fail("Methode isFull non trouvée");
         }
-        return null;  
+        
     }
-
-    //Conditions de visctoire en cas d'égalité
 
 }
