@@ -1,4 +1,4 @@
-package main.java.puissance4;
+package puissance4;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,8 +10,10 @@ public class App {
         chooseCommunication();
     }
 
-    // Méthode pour Afficher proprement une question et récuperer une valeur de type
-    // String :)
+    /**
+     * Méthode qui permet d'échanger avec l'utilisateur et avoir une chaines de caractères en retour 
+     * @return Chaine de caractères saisie par l'utilisateur
+     */
     public static String promptForString(String prompt) {
         System.out.println(prompt);
         System.out.print("> ");
@@ -26,8 +28,9 @@ public class App {
         }
     }
 
-    // Méthode pour Afficher proprement une question et récuperer une valeur de type
-    // Integer :)
+    /** Méthode qui permet d'échanger avec l'utilisateur et avoir un entier en retour 
+     * @return L'entier entré par l'utilisateur
+     */
     public static int promptForInt(String prompt) {
         String response = promptForString(prompt);
         try {
@@ -38,6 +41,11 @@ public class App {
         }
     }
 
+    /**
+     * Méthode qui permet de choisir le mode de communication entre les joueurs
+     * @see LocalPlay
+     * @see App#chooseTypeOfCommunication()
+     */
     private static void chooseCommunication() {
         int choice = promptForInt("Puissance 4 - Multiplayer \n1 - Local\n2 - Reseau");
         switch (choice) {
@@ -54,6 +62,11 @@ public class App {
         }
     }
 
+    /**
+     * Méthode qui permet de choisir entre le mode serveur et le mode client
+     * @see OnlinePlay
+     * @see Client
+     */
     private static void chooseTypeOfCommunication() {
         int choice = App.promptForInt(textColor.ANSI_YELLOW+ "Choississez le type de connection :\n1 - Hôte de partie\n2 - Rejoindre une partie"+textColor.RESET );
         switch (choice) {

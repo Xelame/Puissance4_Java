@@ -1,4 +1,5 @@
-package main.java.puissance4;
+package puissance4;
+
 import java.util.ArrayList;
 
 public class Grille {
@@ -14,11 +15,11 @@ public class Grille {
     private final int NOMBRE_DE_JOUEUR;
 
     /**
-     * Size of our grid : width
+     * Taille de notre grille : largeur
      */
     private final int NOMBRE_DE_COLONNE;
     /**
-     * Size of our grid : height
+     * Taille de notre grille : hauteur
      */
     private final int NOMBRE_DE_LIGNE;
 
@@ -58,7 +59,7 @@ public class Grille {
     }
 
     /**
-     * Méthode pour afficher notre joli plateau de jeu dans ce sens :
+     * Méthode pour afficher notre joli plateau de jeu dans ce sens : <br>
      * <img src="https://i.ibb.co/JB4RH0s/Grapihque.png"/>
      */
     public String toString() {
@@ -86,9 +87,9 @@ public class Grille {
     }
 
     /**
-     * Ask the current player which column he choose
-     *
-     * @return a Letter corresponding to the column choosen
+     * Choix de la colonne dans laquelle le joueur veut jouer
+     * @param playerLetter La lettre du joueur
+     * @return L'index de la colonne choisie
      */
     public int chooseColumn(String playerLetter) {
         String choice = App
@@ -102,21 +103,14 @@ public class Grille {
         }
     }
 
-    /**
-     * Méthode qui ajoute la pièce du joueur sur la colonne selectionner
-     * 
-     * @param indexColonne a String correspond to the column choosed by user
-     * @param turnNumber   ... on te voit souvent toi
+
+    /** 
+     * Rempli si possible la colonne choisie par le joueur
+     * @param indexColonne L'index de la colonne choisie
+     * @param playerLetter La lettre du joueur
+     * @return true si la colonne est jouable, false sinon
      */
     public Boolean fillColumn(int indexColonne, String playerLetter) {
-
-        // ! Bien vu, hélas méthode déprécié malgré les comms (＞﹏＜)
-        // en ascii a = 97 et z = 122 donc on va de a à j c'est à dire de 97 à 106
-        // si le caractère correspond à a on rempli la premiere colonne donc on fait
-        // letter - 97 car on commence à 0
-
-        // Ici on donne la position de la lettre dans l'alphabet (où a = 0, b = 1,
-        // etc...)
 
         Colonne columnChoosen = contenu.get(indexColonne);
 
@@ -132,8 +126,7 @@ public class Grille {
 
     /**
      * Méthode qui test si la grille est pleine
-     * 
-     * @return Boolean response if the grid is full
+     * @return true si la grille est pleine, false sinon
      */
     public Boolean isFull() {
         for (int column = 0; column < contenu.size(); column++) {
@@ -146,8 +139,7 @@ public class Grille {
     }
 
     /**
-     * Fill the grid of empty slots in terms of number of players
-     * 
+     * Création de la grille
      */
     private void createGrid() {
         contenu = new ArrayList<>();
@@ -157,10 +149,10 @@ public class Grille {
     }
 
     /**
-     * 
-     * @param playerLetter
-     * @param inversed
-     * @return
+     * Test si le joueur a gagné avec les diagonales
+     * @param playerLetter La lettre du joueur
+     * @param inversed Si true on test les diagonales inversées
+     * @return true si le joueur a gagné, false sinon
      */
     private Boolean diagonalWin(String playerLetter, Boolean inversed) {
         for (int colonne = (inversed ? 3 : 0); colonne < (inversed ? NOMBRE_DE_COLONNE
@@ -175,12 +167,13 @@ public class Grille {
     }
 
     /**
-     * 
-     * @param colonne
-     * @param ligne
-     * @param playerLetter
-     * @param inversed
-     * @return
+     * Regarde si 4 pions sont alignés dans une diagonale
+     * @param colonne La colonne de départ
+     * @param ligne La ligne de départ
+     * @param playerLetter La lettre du joueur
+     * @param inversed Si true on test les diagonales inversées
+     * @return true si 4 pions sont alignés, false sinon
+     * @see Grille#diagonalWin(String, Boolean)
      */
     private Boolean checkdiagonal(int colonne, int ligne, String playerLetter, Boolean inversed) {
         if (inversed) {
@@ -197,9 +190,9 @@ public class Grille {
     }
 
     /**
-     * 
-     * @param playerLetter
-     * @return
+     * Test si le joueur a gagné avec les lignes
+     * @param playerLetter La lettre du joueur
+     * @return true si le joueur a gagné, false sinon
      */
     private Boolean lineWin(String playerLetter) {
         for (int colonne = 0; colonne < NOMBRE_DE_COLONNE - 3; colonne++) {
@@ -213,11 +206,12 @@ public class Grille {
     }
 
     /**
-     * 
-     * @param colonne
-     * @param ligne
-     * @param playerLetter
-     * @return
+     * Regarde si 4 pions sont alignés dans une ligne
+     * @param colonne La colonne de départ
+     * @param ligne La ligne de départ
+     * @param playerLetter La lettre du joueur
+     * @return true si 4 pions sont alignés, false sinon
+     * @see Grille#lineWin(String)
      */
     private Boolean checkline(int colonne, int ligne, String playerLetter) {
         return contenu.get(colonne).getArray()[ligne].equals(playerLetter)
@@ -227,9 +221,9 @@ public class Grille {
     }
 
     /**
-     * 
-     * @param playerLetter
-     * @return
+     * Test si le joueur a gagné avec les colonnes
+     * @param playerLetter La lettre du joueur
+     * @return true si le joueur a gagné, false sinon
      */
     private Boolean columnWin(String playerLetter) {
         for (int colonne = 0; colonne < NOMBRE_DE_COLONNE; colonne++) {         
@@ -243,11 +237,12 @@ public class Grille {
     }
 
     /**
-     * 
-     * @param colonne
-     * @param ligne
-     * @param playerLetter
-     * @return
+     * Regarde si 4 pions sont alignés dans une colonne
+     * @param colonne La colonne de départ
+     * @param ligne La ligne de départ
+     * @param playerLetter La lettre du joueur
+     * @return true si 4 pions sont alignés, false sinon
+     * @see Grille#columnWin(String)
      */
     private Boolean checkcolumn(int colonne, int ligne, String playerLetter) {
         return contenu.get(colonne).getArray()[ligne].equals(playerLetter)
@@ -256,6 +251,14 @@ public class Grille {
                 && contenu.get(colonne).getArray()[ligne + 3].equals(playerLetter);
     }
 
+    /**
+     * Test si le joueur a gagné
+     * @param playerLetter La lettre du joueur
+     * @return true si le joueur a gagné, false sinon
+     * @see Grille#columnWin(String)
+     * @see Grille#lineWin(String)
+     * @see Grille#diagonalWin(String, Boolean)
+     */
     public Boolean isEnd(String playerLetter) {
         return isFull()
                 || diagonalWin(playerLetter, true)

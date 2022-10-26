@@ -1,4 +1,4 @@
-package main.java.puissance4;
+package puissance4;
 
 public class textColor {
 

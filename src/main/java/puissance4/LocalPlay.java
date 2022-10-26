@@ -1,8 +1,4 @@
-package main.java.puissance4;
-
-import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.channels.SocketChannel;
+package puissance4;
 
 public class LocalPlay {
 

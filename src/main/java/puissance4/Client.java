@@ -1,26 +1,19 @@
-package main.java.puissance4;
+package puissance4;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.net.ServerSocket;
-import java.util.ArrayList;
 import java.io.BufferedReader;
-
 import java.io.InputStreamReader;
-
-import javax.swing.text.StyledEditorKit.BoldAction;
-
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 
 public class Client {
-  
-    
-    //public static void main(String[] args){
 
-        private SocketChannel clientSocket;
-        private int NOMBRE_DE_JOUEUR ;
-        private Grille grille;
-    
+    // public static void main(String[] args){
+
+    private SocketChannel clientSocket;
+    private int NOMBRE_DE_JOUEUR;
+    private Grille grille;
 
     public Client(Boolean isLocal) {
         try {
@@ -28,7 +21,7 @@ public class Client {
             connectToServer(isLocal);
 
             // Etape 1 - 1ere reception : taille de la grille
-            
+
             // Message de type : "Players X" où X est le nombre a récupéré ^^
             NOMBRE_DE_JOUEUR = Integer.parseInt(listen(clientSocket).split(" ")[1].trim());
 
@@ -56,7 +49,7 @@ public class Client {
                     System.out.println("La colonne est deja pleine !");
                     leChiffreQueNousDonneLeJoueur = grille.chooseColumn(character);
                 }
-                
+
                 // Réponse de type : Turn X 0 où X est le joueur et 0 l'index
                 write("Turn " + character + " " + leChiffreQueNousDonneLeJoueur, clientSocket);
             } else if (turncall[0].equals("Turn")) {
@@ -65,7 +58,8 @@ public class Client {
                     isRunning = !isRunning;
                     if (!grille.isFull()) {
                         System.out
-                                .println(grille.toString() + "\nJoueur " + String.valueOf(turncall[1].trim()) + " a gagné !");
+                                .println(grille.toString() + "\nJoueur " + String.valueOf(turncall[1].trim())
+                                        + " a gagné !");
                     } else {
                         System.out.println(grille.toString() + "\nÉgalité à la BigFlop et AuLit XD PTDR");
                     }
@@ -102,13 +96,12 @@ public class Client {
         }
     }
 
-    public static String promptForString(){
+    public static String promptForString() {
         InputStreamReader bis = new InputStreamReader(System.in);
         BufferedReader br = new BufferedReader(bis);
         try {
             return br.readLine();
-        }
-        catch(IOException e){
+        } catch (IOException e) {
             System.err.println("Something went wrong : " + e.getMessage());
             System.err.println("Please retry : ");
             return promptForString();
