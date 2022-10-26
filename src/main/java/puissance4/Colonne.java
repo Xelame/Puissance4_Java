@@ -1,4 +1,4 @@
-package puissance4;
+package main.java.puissance4;
 import java.util.ArrayList;
 
 public final class Colonne {
@@ -9,6 +9,18 @@ public final class Colonne {
         body = new ArrayList<>();
         for (int i = 0; i < height; i++) {
             body.add(" ");
+        }
+    }
+    public Colonne(String TEST) {
+        body = new ArrayList<>();
+        if(TEST == "withX"){
+            for (int i = 0; i < 6; i++) {
+                body.add("X");
+            }
+        } else {
+            for (int i = 0; i < 6; i++) {
+                body.add(" ");
+            }
         }
     }
 

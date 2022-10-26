@@ -1,5 +1,4 @@
-package puissance4;
-
+package main.java.puissance4;
 import java.util.ArrayList;
 
 public class Grille {
@@ -51,6 +50,7 @@ public class Grille {
      * @see Grille
      */
     public static Grille getInstance(int nombreDeJoueur) {
+   
         if (instance == null) {
             instance = new Grille(nombreDeJoueur);
         }
@@ -232,7 +232,7 @@ public class Grille {
      * @return
      */
     private Boolean columnWin(String playerLetter) {
-        for (int colonne = 0; colonne < NOMBRE_DE_COLONNE; colonne++) {
+        for (int colonne = 0; colonne < NOMBRE_DE_COLONNE; colonne++) {         
             for (int ligne = 0; ligne < NOMBRE_DE_LIGNE - 3; ligne++) {
                 if (checkcolumn(colonne, ligne, playerLetter)) {
                     return true;
